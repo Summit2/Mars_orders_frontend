@@ -1,0 +1,99 @@
+.card-list {
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: center; */
+    align-items: left;
+    list-style: none;
+    padding: 0;
+}
+
+
+.card {
+    margin: 2rem;
+    max-width: 30rem; /* Set your desired maximum width */
+    display: grid;
+    grid-template-columns: var(--indent) calc(3 * var(--indent)) 1fr 1fr calc(2 * var(--indent)) var(--indent);
+    grid-template-rows: var(--indent) calc(3 * var(--indent)) 1fr calc(2 * var(--indent)) var(--indent);
+  }
+
+
+/* Стилизация заголовка карточки */
+.card-title {
+    font-size: 1.5rem;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+/* Стилизация текста карточки */
+.card-text {
+    font-size: 1rem;
+    margin: 0;
+    
+}
+
+.card h1 {
+    font-size: 40px;
+}
+/* Стилизация заголовка карточки */
+.card-title {
+    
+    font-size: 1.5rem;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+/* Стилизация текста карточки */
+.card-text {
+    
+    font-size: 1rem;
+    margin: 0;
+}
+
+
+
+
+/*размер шрифта*/
+.font b{
+ font-size: 50px;
+}
+.font-ordinary {
+    font-size: 40px;
+}
+.images{
+    /* height: 400px;
+            width: 400px; 
+            background-position: center center;
+  background-repeat: no-repeat; */
+  
+    /* display: block; */
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+  
+          
+      
+}
+
+.current-image {
+    height: 300px;
+            width: 400px; 
+
+}
+
+ .beautiful-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #6461e7de; /* Цвет фона */
+    color: #fff; /* Цвет текста */
+    text-decoration: none; /* Убираем подчеркивание ссылки */
+    border-radius: 5px; /* Закругленные углы */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Тень */
+    font-weight: bold;
+    transition: background-color 0.3s ease; /* Плавное изменение цвета фона при наведении */
+}
+
+.beautiful-link:hover {
+
+    background-color: #0026fd; /* Новый цвет фона при наведении */
+}
+
