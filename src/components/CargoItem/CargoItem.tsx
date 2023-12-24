@@ -34,7 +34,9 @@ const CItem: FC<CargoItemProps> = ({cargo, onClick, isServer, reloadPage}) => {
     }
 
     return (
+        
         <div className="card-city-item" data-city-id={cargo.pk}>
+            <b>{cargo.title}</b>
             <img
                 src={`data:image/jpeg;base64,${cargo.image_binary.toString()}`} className="images" alt={cargo.title}
                 onClick={() => onClick(cargo.pk)}
@@ -48,6 +50,11 @@ const CItem: FC<CargoItemProps> = ({cargo, onClick, isServer, reloadPage}) => {
               </button>
                 </div>
             )}
+            <div className="info-button-container">
+        <button className="info-button" onClick={() => onClick(cargo.pk)}>
+        Подробнее...
+        </button>
+      </div>
             <div className="container-card" onClick={() => onClick(cargo.pk)}>{cargo.title}</div>
             {/* <a href={`cargo/${cargo.pk}/`} className="beautiful-link">
             <h2>Подробнее...</h2>

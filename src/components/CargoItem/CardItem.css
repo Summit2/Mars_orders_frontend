@@ -1,55 +1,50 @@
+/* CargoItem.css */
 .card-city-item {
-    background-color: #18181B;
+    background-color: #ffffff;
     position: relative;
     overflow: hidden;
     width: calc(25% - 20px);
     height: 450px;
-
-
     margin: 10px;
-    border-radius: 20px;
+    border-radius: 5px;
     transition: transform 0.3s ease, filter 0.3s ease;
     display: inline-block;
     cursor: pointer;
-}
-
-.photo {
-    width: 100%;
-    /* height: 500px; */
-    height: 100%;
-    object-fit: cover;
-}
-
-.container-card {
+  }
+  .card-city-item b {
+    font-size: 20px;
+  ;
+  }
+  .title-container {
     width: 100%;
     height: 18%;
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     border: 2px solid rgba(255, 255, 255, 0.66);
-    /* background: linear-gradient(to right, rgba(74, 0, 152, 0.84) 0%, rgba(6, 76, 98, 0.8) 100%); */
-    /* border-radius: 15px 15px 20px 20px; */
     text-align: center;
     color: #000000;
     font-size: 27px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-.card-city-item:hover {
+  }
+  
+  .photo {
+    width: 100px;
+    height: 80px;
+    object-fit: cover;
+  }
+  
+  /* .card-city-item:hover {
     transform: scale(1.05);
     box-shadow: 0 0 14px rgba(255, 255, 255, 0.8);
-}
+  } */
 
-.card-city-item:hover .photo {
-    filter: brightness(0.7);
-}
-
-.deleted-trash {
+  .deleted-trash {
     position: absolute;
     top: 3px;
     right: 3px;
@@ -57,17 +52,17 @@
     height: 30px;
     opacity: 0;
     transition: opacity 0.3s ease;
-}
-
-.card-city-item:hover .deleted-trash {
+  }
+  
+  .card-city-item:hover .deleted-trash {
     opacity: 1;
-}
-
-.card-city-item:hover .circle {
+  }
+  
+  .card-city-item:hover .circle {
     opacity: 1;
-}
-
-.circle {
+  }
+  
+  .circle {
     position: absolute;
     top: 7px;
     right: 7px;
@@ -78,9 +73,37 @@
     opacity: 0;
     transition: opacity 0.3s ease, background-color 0.3s ease;
     cursor: pointer;
-}
-
-.circle:hover {
+  }
+  
+  /* .circle:hover {
     opacity: 1;
     background-color: rgba(255, 255, 255, 0);
+  }
+   */
+  .info-button-container {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+  }
+  
+  .info-button {
+    background-color: #1d79c4;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .new-button:hover {
+    background-color: #1d79c4;
+  }
+  
+  .container-card {
+    /* Your existing styles */
+    color: #ffffff; /* Set the text color to white or an appropriate color */
+    font-size: 16px; /* Adjust the font size as needed */
 }
