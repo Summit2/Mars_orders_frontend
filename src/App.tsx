@@ -39,6 +39,17 @@ function App() {
                                 cargoPage, {name: `${name}`, to: `cargo/${id}`}
                             ])}
                         />}
+                    
+                    />
+                    <Route path="/login"
+                           element={
+                               <LoginPage/>
+                           }
+                    />
+                    <Route path="/register"
+                           element={
+                               <RegisterPage/>
+                           }
                     />
                 </Routes>
             </>
