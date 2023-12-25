@@ -41,7 +41,7 @@ function App() {
                         />}
                     
                     />
-                    <Route path="/login"
+                    {/* <Route path="/login"
                            element={
                                <LoginPage/>
                            }
@@ -50,7 +50,7 @@ function App() {
                            element={
                                <RegisterPage/>
                            }
-                    />
+                    /> */}
                 </Routes>
             </>
         </>

@@ -1,5 +1,5 @@
 /* CargoItem.css */
-.card-city-item {
+.card-cargo-item {
     background-color: #ffffff;
     position: relative;
     overflow: hidden;
@@ -10,8 +10,15 @@
     transition: transform 0.3s ease, filter 0.3s ease;
     display: inline-block;
     cursor: pointer;
+    min-width: 320px;
   }
-  .card-city-item b {
+  @media (max-width: 480px) {
+    .card-cargo-item  {
+        width: 100%;
+        flex: 0 0 calc(100% - 20px);
+    }
+}
+  .card-cargo-item b {
     font-size: 20px;
   ;
   }
@@ -54,11 +61,11 @@
     transition: opacity 0.3s ease;
   }
   
-  .card-city-item:hover .deleted-trash {
+  .card-cargo-item:hover .deleted-trash {
     opacity: 1;
   }
   
-  .card-city-item:hover .circle {
+  .card-cargo-item:hover .circle {
     opacity: 1;
   }
   

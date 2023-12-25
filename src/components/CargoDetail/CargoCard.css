@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-.city-card-body {
+.cargo-card-body {
     font-family:sans-serif;
     display: flex;
     align-items: center;
@@ -43,10 +43,17 @@ p {
     padding: 30px;
     position: relative;
     width: 50%;
+    min-width: 300px;
     max-width: 100%;
+    
     text-align: center;
 }
-
+@media (max-width: 480px) {
+    .card-container {
+        width: 100%; /* Make the card take the full width of the screen */
+        flex: 0 0 calc(100% - 20px); /* Adjust the width and margin for single cards in a row */
+    }
+}
 .card-container .pro {
     color: #231E39;
     background-color: #FEBB0B;
