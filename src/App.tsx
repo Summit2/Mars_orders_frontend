@@ -1,10 +1,12 @@
 import {Routes, Route, Navigate} from 'react-router-dom';
 import NavigationBar from "./components/NavigationBar.tsx";
 import CargoList from "./components/CargoList/CargoList.tsx";
-import CityDetail from "./components/CargoDetail/CargoDetail.tsx";
+import CargoDetail from "./components/CargoDetail/CargoDetail.tsx";
 import {useState} from "react";
 import BreadCrumbs, {IBreadCrumb} from "./components/BreadCrumbs/BreadCrumbs.tsx";
-
+// import RequestView from "./components/RequestView/RequestView.tsx";
+import LoginPage from "./components/LoginPage/LoginPage.tsx";
+import RegisterPage from "./components/RegisterPage/RegisterPage.tsx";
 
 function App() {
     const cargoPage = {name: 'Грузы', to: 'cargo'};
@@ -34,14 +36,14 @@ function App() {
                            }
                     />
                     <Route path="/cargo/:id" element={
-                        <CityDetail
+                        <CargoDetail
                             setPage={(name, id) => addPage([
                                 cargoPage, {name: `${name}`, to: `cargo/${id}`}
                             ])}
                         />}
                     
                     />
-                    {/* <Route path="/login"
+                    <Route path="/login"
                            element={
                                <LoginPage/>
                            }
@@ -50,7 +52,7 @@ function App() {
                            element={
                                <RegisterPage/>
                            }
-                    /> */}
+                    />
                 </Routes>
             </>
         </>

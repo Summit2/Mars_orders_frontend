@@ -7,6 +7,10 @@ import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import React, {FC} from "react";
 
+import {useAppDispatch, useAppSelector} from "../hooks/redux.ts";
+import {logoutSession} from "../store/reducers/Actions.tsx";
+
+
 interface NavigationBarProps {
     handleSearchValue: (value: string) => void
 }
@@ -14,10 +18,22 @@ interface NavigationBarProps {
 
 const NavigationBar: FC<NavigationBarProps> = ({handleSearchValue}) => {
 
+    // const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    //     e.preventDefault();
+    //     const inputValue = (e.currentTarget.elements.namedItem('search') as HTMLInputElement)?.value;
+    //     handleSearchValue(inputValue);
+    // };
+    const dispatch = useAppDispatch()
+    const {isLoading, success, error, isAuth} = useAppSelector(state => state.userReducer)
+
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const inputValue = (e.currentTarget.elements.namedItem('search') as HTMLInputElement)?.value;
         handleSearchValue(inputValue);
+    };
+
+    const handleLogout = () => {
+        dispatch(logoutSession())
     };
 
     return (
@@ -29,17 +45,11 @@ const NavigationBar: FC<NavigationBarProps> = ({handleSearchValue}) => {
                         <Nav.Item>
                             <Link to="/cargo/" className="nav-link ps-0">Список грузов</Link>
                         </Nav.Item>
-                        {/* <Nav.Item>
-                            <Link to="/cargo" className="nav-link"></Link>
-                        </Nav.Item> */}
-                        {/* <NavDropdown title="Фильтрация" id="basic-nav-dropdown"> */}
-                    {/* <NavDropdown.Item as={Link} to="/cargo/12">Обеденный набор 1</NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to="/cargo/14">Запасная одежда</NavDropdown.Item> */}
-                    {/* <NavDropdown.Item onClick={() => handleFilter('weight')}>По весу</NavDropdown.Item>
-                    <NavDropdown.Item onClick={() => handleFilter('name')}>По названию</NavDropdown.Item> */}
-                    {/* <NavDropdown.Item onClick={() => handleFilter('weight')}>По весу</NavDropdown.Item> */}
-                    
-                  {/* </NavDropdown> */}
+                        <Nav.Item>
+                                <Link to="/request" className="nav-link">
+                                    Заявка
+                                </Link>
+                            </Nav.Item>
                     </Nav>
                     <Form onSubmit={handleSearch} className="d-flex">
                         <FormControl
@@ -52,6 +62,7 @@ const NavigationBar: FC<NavigationBarProps> = ({handleSearchValue}) => {
                         />
                         <Button type="submit" variant="outline-light">Поиск</Button>
                     </Form>
+                    
                 </Navbar.Collapse>
             </div>
         </Navbar>

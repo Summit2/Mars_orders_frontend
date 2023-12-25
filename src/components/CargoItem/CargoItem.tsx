@@ -1,37 +1,44 @@
 import {FC} from 'react';
 import {CargoItem} from '../../models/data.js';
 import './CardItem.css'
-
+import {addCargoIntoOrder} from "../../store/reducers/Actions.tsx";
+import {useAppDispatch, useAppSelector} from "../../hooks/redux.ts";
+import {cargoSlice} from "../../store/reducers/CargoSlice.tsx";
 
 interface CargoItemProps {
     cargo: CargoItem;
     onClick: (num: number) => void,
     isServer: boolean
-    reloadPage: () => void
+    // reloadPage: () => void
 }
 
-const CItem: FC<CargoItemProps> = ({cargo, onClick, isServer, reloadPage}) => {
-    const deleteClickHandler = () => {
-        DeleteData()
-            
-            .catch(error => {
-                alert(`Cannot delete cargo : ${cargo.pk}: ${error}`)
-            });
-    }
+const CItem: FC<CargoItemProps> = ({cargo, onClick, isServer}) => {
+    const dispatch = useAppDispatch()
+    const {increase} = cargoSlice.actions
+    const {serialNumber} = useAppSelector(state => state.cargoReducer)
 
-    const DeleteData = async () => {
-        const response = await fetch('http://localhost:8000/cargo/' + `${cargo.pk}/`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        if (response.status === 200) {
-            reloadPage()
-            return
-        }
-        throw new Error(`status code = ${response.status}`);
-    }
+    // const deleteClickHandler = () => {
+    //     DeleteData()
+            
+    //         .catch(error => {
+    //             alert(`Cannot delete cargo : ${cargo.pk}: ${error}`)
+    //         });
+    // }
+
+    // const DeleteData = async () => {
+    //     const response = await fetch('http://localhost:8000/cargo/' + `${cargo.pk}/`, {
+    //         method: 'DELETE',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //     });
+    //     if (response.status === 200) {
+    //         reloadPage()
+    //         return
+    //     }
+    //     throw new Error(`status code = ${response.status}`);
+    // }
+    
 
     return (
         
@@ -43,12 +50,12 @@ const CItem: FC<CargoItemProps> = ({cargo, onClick, isServer, reloadPage}) => {
                 id={`photo-${cargo.pk}`}
             />
             {isServer && (
-                <div className="circle" onClick={deleteClickHandler}>
+                // <div className="circle" onClick={deleteClickHandler}>
                     
                     <button type="submit" name="del_btn">
                 &#10060;
               </button>
-                </div>
+                // </div>
             )}
             <div className="info-button-container">
         <button className="info-button" onClick={() => onClick(cargo.pk)}>
