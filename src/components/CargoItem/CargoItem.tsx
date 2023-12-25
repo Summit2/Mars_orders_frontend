@@ -35,7 +35,7 @@ const CItem: FC<CargoItemProps> = ({cargo, onClick, isServer, reloadPage}) => {
 
     return (
         
-        <div className="card-city-item" data-city-id={cargo.pk}>
+        <div className="card-cargo-item" data-cargo-id={cargo.pk}>
             <b>{cargo.title}</b>
             <img
                 src={`data:image/jpeg;base64,${cargo.image_binary.toString()}`} className="images" alt={cargo.title}
