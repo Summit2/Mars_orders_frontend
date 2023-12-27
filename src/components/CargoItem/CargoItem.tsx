@@ -1,48 +1,41 @@
 import {FC} from 'react';
 import {CargoItem} from '../../models/data.js';
 import './CardItem.css'
-import {addCargoIntoOrder} from "../../store/reducers/Actions.tsx";
-import {useAppDispatch, useAppSelector} from "../../hooks/redux.ts";
-import {cargoSlice} from "../../store/reducers/CargoSlice.tsx";
+
 
 interface CargoItemProps {
     cargo: CargoItem;
     onClick: (num: number) => void,
     isServer: boolean
-    // reloadPage: () => void
+    reloadPage: () => void
 }
 
-const CItem: FC<CargoItemProps> = ({cargo, onClick, isServer}) => {
-    const dispatch = useAppDispatch()
-    const {increase} = cargoSlice.actions
-    const {serialNumber} = useAppSelector(state => state.cargoReducer)
-
-    // const deleteClickHandler = () => {
-    //     DeleteData()
+const CItem: FC<CargoItemProps> = ({cargo, onClick, isServer, reloadPage}) => {
+    const deleteClickHandler = () => {
+        DeleteData()
             
-    //         .catch(error => {
-    //             alert(`Cannot delete cargo : ${cargo.pk}: ${error}`)
-    //         });
-    // }
+            .catch(error => {
+                alert(`Cannot delete cargo : ${cargo.pk}: ${error}`)
+            });
+    }
 
-    // const DeleteData = async () => {
-    //     const response = await fetch('http://localhost:8000/cargo/' + `${cargo.pk}/`, {
-    //         method: 'DELETE',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //     });
-    //     if (response.status === 200) {
-    //         reloadPage()
-    //         return
-    //     }
-    //     throw new Error(`status code = ${response.status}`);
-    // }
-    
+    const DeleteData = async () => {
+        const response = await fetch('http://localhost:8000/cargo/' + `${cargo.pk}/`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (response.status === 200) {
+            reloadPage()
+            return
+        }
+        throw new Error(`status code = ${response.status}`);
+    }
 
     return (
         
-        <div className="card-cargo-item" data-city-id={cargo.pk}>
+        <div className="card-cargo-item" data-cargo-id={cargo.pk}>
             <b>{cargo.title}</b>
             <img
                 src={`data:image/jpeg;base64,${cargo.image_binary.toString()}`} className="images" alt={cargo.title}
@@ -50,12 +43,12 @@ const CItem: FC<CargoItemProps> = ({cargo, onClick, isServer}) => {
                 id={`photo-${cargo.pk}`}
             />
             {isServer && (
-                // <div className="circle" onClick={deleteClickHandler}>
+                <div className="circle" onClick={deleteClickHandler}>
                     
                     <button type="submit" name="del_btn">
                 &#10060;
               </button>
-                // </div>
+                </div>
             )}
             <div className="info-button-container">
         <button className="info-button" onClick={() => onClick(cargo.pk)}>

@@ -4,6 +4,7 @@ import {CargoItem, mock_data} from '../../models/data.js';
 import './CargoCard.css'
 import {useAppDispatch, useAppSelector} from "../../hooks/redux.ts";
 import {fetchExactCargo} from "../../store/reducers/Actions.tsx";
+import './CargoDetail.css'
 
 
 interface CargoDetailProps {
@@ -95,12 +96,13 @@ const CargoDetail: FC<CargoDetailProps> = ({setPage}) => {
 
     return (
         <>
-          {cargo.title}
-          <div className="current-image">
-          <img src={`data:image/jpeg;base64,${cargo.image_binary.toString()}`} style={{ height: '300px', width: '400px' }} />
-    
+        <div className='font'>
+         <b> {cargo.title}</b>
+          <div className="img">
+          <img src={`data:image/jpeg;base64,${cargo.image_binary.toString()}`} 
+          style={{ height: '260px', width: '350px', objectFit: 'cover' }}/>
           </div>
-          <div className='font'>
+          
           <div>
           
           <br></br>

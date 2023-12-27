@@ -47,11 +47,11 @@ const NavigationBar: FC<NavigationBarProps> = ({handleSearchValue}) => {
                         </Nav.Item>
                         <Nav.Item>
                                 <Link to="/request" className="nav-link">
-                                    Заявка
+                                    Заявка на заказ
                                 </Link>
                             </Nav.Item>
                     </Nav>
-                    <Form onSubmit={handleSearch} className="d-flex">
+                    <Form onSubmit={handleSearch} className="d-flex mb-1">
                         <FormControl
                             id={'search-text-field'}
                             type="text"
@@ -62,7 +62,32 @@ const NavigationBar: FC<NavigationBarProps> = ({handleSearchValue}) => {
                         />
                         <Button type="submit" variant="outline-light">Поиск</Button>
                     </Form>
-                    
+                    {isAuth ? (
+                            <Nav className="ms-2 mb-1">
+                                <Nav.Item>
+                                    <Button variant="outline-light" onClick={handleLogout}>
+                                        Выйти
+                                    </Button>
+                                </Nav.Item>
+                            </Nav>
+                        ) : (
+                            <>
+                                <Nav className="ms-2 mb-1">
+                                    <Nav.Item>
+                                        <Link to="/login" className="btn btn-outline-light">
+                                            Войти
+                                        </Link>
+                                    </Nav.Item>
+                                </Nav>
+                                <Nav className="ms-2 mb-1">
+                                    <Nav.Item>
+                                        <Link to="/register" className="btn btn-outline-primary">
+                                            Регистрация
+                                        </Link>
+                                    </Nav.Item>
+                                </Nav>
+                            </>
+                        )}
                 </Navbar.Collapse>
             </div>
         </Navbar>

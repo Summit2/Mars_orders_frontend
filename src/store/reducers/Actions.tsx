@@ -18,7 +18,7 @@ const base_url = '/api'// 'http://localhost:8000'
 
 export const fetchCargo = (searchValue?: string) => async (dispatch: AppDispatch) => {
     const accessToken = Cookies.get('session_key')
-    // console.log(accessToken)
+    console.log('session key' ,accessToken)
     dispatch(userSlice.actions.setAuthStatus(accessToken != null && accessToken != ""));
 
     try {
@@ -30,7 +30,7 @@ export const fetchCargo = (searchValue?: string) => async (dispatch: AppDispatch
             },
            
         });
-        
+        console.log(response)
         dispatch(cargoSlice.actions.all_cargoFetched(response.data.data))
     } catch (e) {
         dispatch(cargoSlice.actions.all_cargoFetchedError(`Ошибка: ${e}`))
@@ -295,7 +295,7 @@ export const loginSession = (login: string, password: string) => async (dispatch
             "passwd": password,
         }
     };
-
+    console.log(config)
     try {
         dispatch(userSlice.actions.startProcess())
         const response = await axios<IAuthResponse>(config);

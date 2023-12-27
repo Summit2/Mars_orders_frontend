@@ -1,4 +1,4 @@
-/* CargoItem.css */
+
 .card-cargo-item {
     background-color: #ffffff;
     position: relative;
@@ -9,7 +9,7 @@
     border-radius: 5px;
     transition: transform 0.3s ease, filter 0.3s ease;
     display: inline-block;
-    cursor: pointer;
+    cursor: default;
     min-width: 320px;
   }
   @media (max-width: 480px) {
@@ -44,6 +44,7 @@
     width: 100px;
     height: 80px;
     object-fit: cover;
+    pointer-events: none;
   }
   
   /* .card-city-item:hover {
@@ -93,6 +94,7 @@
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
+    pointer-events: none;
   }
   
   .info-button {
@@ -103,6 +105,7 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    pointer-events: auto;
   }
   
   .new-button:hover {
@@ -110,7 +113,11 @@
   }
   
   .container-card {
-    /* Your existing styles */
-    color: #ffffff; /* Set the text color to white or an appropriate color */
-    font-size: 16px; /* Adjust the font size as needed */
-}
+    color: #ffffff;
+    font-size: 16px;
+  }
+  
+  .card-cargo-item:hover .info-button-container,
+  .card-cargo-item:hover .deleted-trash {
+    pointer-events: auto;
+  }
