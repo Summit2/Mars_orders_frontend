@@ -29,17 +29,7 @@ const NavigationBar: FC<NavigationBarProps> = ({handleSearchValue}) => {
                         <Nav.Item>
                             <Link to="/cargo/" className="nav-link ps-0">Список грузов</Link>
                         </Nav.Item>
-                        {/* <Nav.Item>
-                            <Link to="/cargo" className="nav-link"></Link>
-                        </Nav.Item> */}
-                        {/* <NavDropdown title="Фильтрация" id="basic-nav-dropdown"> */}
-                    {/* <NavDropdown.Item as={Link} to="/cargo/12">Обеденный набор 1</NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to="/cargo/14">Запасная одежда</NavDropdown.Item> */}
-                    {/* <NavDropdown.Item onClick={() => handleFilter('weight')}>По весу</NavDropdown.Item>
-                    <NavDropdown.Item onClick={() => handleFilter('name')}>По названию</NavDropdown.Item> */}
-                    {/* <NavDropdown.Item onClick={() => handleFilter('weight')}>По весу</NavDropdown.Item> */}
-                    
-                  {/* </NavDropdown> */}
+                        
                     </Nav>
                     <Form onSubmit={handleSearch} className="d-flex">
                         <FormControl

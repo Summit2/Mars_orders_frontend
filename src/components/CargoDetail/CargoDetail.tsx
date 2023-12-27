@@ -1,8 +1,9 @@
 import {FC, useEffect, useState} from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
 import {CargoItem, mock_data} from '../../models/data.js';
-import './CargoCard.css'
-// import '../my_style.css'
+// import './CargoCard.css'
+import './CargoDetail.css'
+
 
 interface CargoDetailProps {
     setPage: (name: string, id: number) => void
@@ -85,12 +86,13 @@ const CargoDetail: FC<CargoDetailProps> = ({setPage}) => {
 
     return (
         <>
-          {cargo.title}
-          <div className="current-image">
-          <img src={`data:image/jpeg;base64,${cargo.image_binary.toString()}`} style={{ height: '300px', width: '400px' }} />
-    
+        <div className='font'>
+         <b> {cargo.title}</b>
+          <div className="img">
+          <img src={`data:image/jpeg;base64,${cargo.image_binary.toString()}`} 
+          style={{ height: '260px', width: '350px', objectFit: 'cover' }}/>
           </div>
-          <div className='font'>
+          
           <div>
           
           <br></br>

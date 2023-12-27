@@ -2,7 +2,7 @@ import {useNavigate} from 'react-router-dom';
 import {FC, useEffect, useState} from 'react';
 import {CargoItem, mock_data} from "../../models/data.js";
 import List from "../List.js";
-import CityItem from "../CargoItem/CargoItem.tsx";
+import CItem from "../CargoItem/CargoItem.tsx";
 import './CargoList.css'
 import '../my_style.css'
 
@@ -73,7 +73,7 @@ const CargoList: FC<CargoListProps> = ({setPage, searchValue, resetSearchValue})
 
     return (
         <List items={cargo} renderItem={(cargo: CargoItem) =>
-            <CityItem
+            <CItem
                 key={cargo.pk}
                 cargo={cargo}
                 isServer={serverIsWork}
