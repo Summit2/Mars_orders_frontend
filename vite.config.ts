@@ -1,15 +1,11 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vitejs.dev/config/
-// export default defineConfig({
-//   plugins: [react()],
-//   base: "/DevelopmentNetworkApplicationFrontend/"
-// })
+
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: 'https://github.com/Summit2/WEB_5_sem_frontend',
+  base: '/WEB_5_sem_frontend/',
   plugins: [react()],
  
   // server: {
