@@ -37,16 +37,16 @@ const LoginPage: FC<LoginPageProps> = () => {
                 <Row className="justify-content-center">
                     <Col md={5}>
                         <div className="bg-dark p-4 rounded">
-                            <h2 className="text-center mb-4">Авторизация</h2>
-                            <Form.Label className="font-weight-bold text-left">Логин</Form.Label>
+                            <h2 className="text-center mb-4" style={{ color: 'white' }}>Авторизация</h2>
+                            <Form.Label className="font-weight-bold text-left"></Form.Label>
                             <Form.Control
                                 onChange={(e) => setLogin(e.target.value)}
                                 type="login"
-                                placeholder="Введите логин"
+                                placeholder="Введите почту"
                                 required
                             />
 
-                            <Form.Label className="mt-3">Пароль</Form.Label>
+                            <Form.Label className="mt-3"></Form.Label>
                             <Form.Control
                                 type="password"
                                 placeholder="Введите пароль"

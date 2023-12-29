@@ -9,14 +9,15 @@ interface RegisterPageProps {
 
 const RegisterPage: FC<RegisterPageProps> = () => {
     const dispatch = useAppDispatch();
-    const [username, setUsername] = useState('');
+    const [first_name, setUserFirstname] = useState('',);
+    const [last_name, setUserLastname] = useState('');
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const {success, isAuth} = useAppSelector(state => state.userReducer)
 
     const handleRegister = () => {
-        if (!username || !login || !password || !confirmPassword) {
+        if (!first_name || !last_name || !login || !password || !confirmPassword) {
             alert('Пожалуйста, заполните все поля');
             return;
         }
@@ -26,7 +27,7 @@ const RegisterPage: FC<RegisterPageProps> = () => {
             return;
         }
 
-        dispatch(registerSession(login, password))
+        dispatch(registerSession(first_name, last_name, login, password))
     };
 
     if (success != '') {
@@ -37,8 +38,8 @@ const RegisterPage: FC<RegisterPageProps> = () => {
 
 
     if (isAuth) {
-        return <Link to="/cities" className="btn btn-outline-danger">
-            Смотреть города
+        return <Link to="/cargo" className="btn btn-outline-danger">
+            Грузы
         </Link>
     }
 
@@ -48,24 +49,32 @@ const RegisterPage: FC<RegisterPageProps> = () => {
                 <Row className="justify-content-center">
                     <Col md={5}>
                         <div className="bg-dark p-4 rounded">
-                            <h2 className="text-center mb-4">Регистрация</h2>
-                            <Form.Label className="font-weight-bold text-left">Имя пользователя</Form.Label>
+                            <h2 className="text-center mb-4" style={{ color: 'white' }}>Регистрация</h2>
+                            <Form.Label className="font-weight-bold text-left" style={{ color: 'white' }}></Form.Label>
                             <Form.Control
-                                onChange={(e) => setUsername(e.target.value)}
+                                onChange={(e) => setUserFirstname(e.target.value)}
                                 type="text"
                                 placeholder="Введите имя пользователя"
                                 required
                             />
 
-                            <Form.Label className="mt-3">Логин</Form.Label>
+                            <Form.Label className="font-weight-bold text-left" style={{ color: 'white' }}></Form.Label>
                             <Form.Control
-                                onChange={(e) => setLogin(e.target.value)}
+                                onChange={(e) => setUserLastname(e.target.value)}
                                 type="text"
-                                placeholder="Введите логин"
+                                placeholder="Введите фамилию пользователя"
                                 required
                             />
 
-                            <Form.Label className="mt-3">Пароль</Form.Label>
+                            <Form.Label className="mt-3" style={{ color: 'white' }}></Form.Label>
+                            <Form.Control
+                                onChange={(e) => setLogin(e.target.value)}
+                                type="text"
+                                placeholder="Введите почту"
+                                required
+                            />
+
+                            <Form.Label className="mt-3" style={{ color: 'white' }}></Form.Label>
                             <Form.Control
                                 onChange={(e) => setPassword(e.target.value)}
                                 type="password"
@@ -73,7 +82,7 @@ const RegisterPage: FC<RegisterPageProps> = () => {
                                 required
                             />
 
-                            <Form.Label className="mt-3">Подтвердите пароль</Form.Label>
+                            <Form.Label className="mt-3" style={{ color: 'white' }}></Form.Label>
                             <Form.Control
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 type="password"

@@ -25,7 +25,7 @@ function App() {
             <BreadCrumbs pages={pages}/>
             <>
                 <Routes>
-                    <Route path="/" element={<Navigate to="cargo"/>}/>
+                    <Route path="/" element={<Navigate to="/cargo"/>}/>
                     <Route path="/cargo"
                            element={
                                <CargoList

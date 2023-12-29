@@ -9,3 +9,28 @@
 body {
     background-color: bisque;
 }
+
+.add-button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 20px;
+  }
+  
+  .add-button_auth {
+    background-color: rgb(22, 46, 167);
+    color: white;
+    padding: 10px 20px;
+    border: black;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .add-button_not_auth 
+  {
+    background-color: rgba(255, 255, 255, 0.416);
+    color: black;
+    padding: 10px 20px;
+    border: black;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  

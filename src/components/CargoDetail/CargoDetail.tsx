@@ -20,82 +20,21 @@ const CargoDetail: FC<CargoDetailProps> = ({setPage}) => {
     console.log('cargo in get cargo', cargo)
     const navigate = useNavigate();
 
-  // @ts-ignore
-    const handleDelete = () => {
-        navigate('/cargo');
-        DeleteData()
-            .then(() => {
-                console.log(`Cargo with ID ${cargo?.pk} successfully deleted.`);
-            })
-            .catch(error => {
-                console.error(`Failed to delete cargo with ID ${cargo?.pk}: ${error}`);
-                navigate('/cargo');
-            });
-    }
 
-    const DeleteData = async () => {
-        try {
-            const response = await fetch('/api/cargo/' + cargo?.pk, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            if (response.status === 200) {
-                window.location.reload();
-            } 
-
-        } catch (error) {
-            console.error('Произошла ошибка сети', error);
-        }
-    }
   // @ts-ignore
     const BackHandler = () => {
         navigate('/cargo');
     }
 
     useEffect(() => {
+
         dispatch(fetchExactCargo(`${params.id}`, setPage))
     }, [params.id]);
 
-    // useEffect(() => {
-    //     fetchCargo()
-    //         .catch((err) => {
-    //             console.error(err);
-    //             const previewID = params.id !== undefined ? parseInt(params.id, 10) - 1 : 0;
-    //             const mockCargo = mock_data[previewID]
-    //             setPage(mockCargo.title ?? "Без названия", mockCargo.pk)
-    //             setCargo(mockCargo);
-    //         });
-
-    // }, [params.id]);
-
-    // async function fetchCargo() {
-    //     try {
-    //         const response = await fetch(`http://localhost:8000/cargo/${params.id}/`);
-
-    //         if (!response.ok) {
-    //             throw new Error('Network response was not ok');
-    //         }
-
-    //         const data = await response.json();
-    //         console.log(data)
-    //         setPage(data?.title ?? "Без названия", data.id_cargo)
-    //         setCargo(data);
-    //     } catch (error) {
-    //         console.error('Error fetching cargo data', error);
-    //         throw error;
-    //     }
-    // }
-
-
-    // if (!cargo) {
-    //     return <div>Loading...</div>;
-    // }
 
     return (
         <>
+         {cargo ? (
         <div className='font'>
          <b> {cargo.title}</b>
           <div className="img">
@@ -114,6 +53,8 @@ const CargoDetail: FC<CargoDetailProps> = ({setPage}) => {
             Описание: {cargo.description}
           </div>
           </div>
+         ) : <p>Loading...</p>
+         }
         </>
       );
 };

@@ -14,6 +14,7 @@ import {cargoSlice} from "./CargoSlice.tsx"
 import {orderSlice} from "./OrderSlice.tsx";
 import {userSlice} from "./UserSlice.tsx";
 
+
 const base_url = '/api'// 'http://localhost:8000'
 
 export const fetchCargo = (searchValue?: string) => async (dispatch: AppDispatch) => {
@@ -35,6 +36,38 @@ export const fetchCargo = (searchValue?: string) => async (dispatch: AppDispatch
     } catch (e) {
         dispatch(cargoSlice.actions.all_cargoFetchedError(`Ошибка: ${e}`))
         dispatch(cargoSlice.actions.all_cargoFetched(filterMockData(searchValue)))
+    }
+}
+
+export const fetchExactCargo = (
+    cargoId: string,
+    setPage: (name: string, id: number) => void
+) => async (dispatch: AppDispatch) => {
+    try {
+        dispatch(cargoSlice.actions.cargoFetching())
+        // console.log('exactcargo')
+        const response = await axios.get<ICargoResponse>(base_url + `/cargo/${cargoId}`)
+        // console.log(response)
+        const cargo = response.data
+        console.log(cargo)
+        setPage(cargo.title ?? "Без названия", cargo.pk)
+        dispatch(cargoSlice.actions.cargoFetched(cargo))
+    } catch (e) {
+        console.log(`Ошибка загрузки списка грузов: ${e}`)
+        
+
+        const finalID = cargoId !== undefined ? parseInt(cargoId, 10) - 1 : 0;
+        // console.log(previewID)
+        let mock_cargo = null
+        mock_data.forEach(element => {
+            if(element.pk = finalID) {
+                mock_cargo = element
+            }
+        });
+        
+
+        setPage(mock_cargo.title ?? "Без названия", mock_cargo.pk)
+        dispatch(cargoSlice.actions.cargoFetched(mock_cargo))
     }
 }
 
@@ -202,36 +235,17 @@ export const deleteOrderById = (id_order: number) => async (dispatch: AppDispatc
 //     }
 // }
 
-export const fetchExactCargo = (
-    cargoId: string,
-    setPage: (name: string, id: number) => void
-) => async (dispatch: AppDispatch) => {
-    try {
-        dispatch(cargoSlice.actions.all_cargoFetching())
-        console.log('exactcargo')
-        const response = await axios.get<ICargoResponse>(base_url + `/cargo/${cargoId}`)
-        console.log(response)
-        const cargo = response.data.data
-        setPage(cargo.title ?? "Без названия", cargo.pk)
-        dispatch(cargoSlice.actions.all_cargoFetched(cargo))
-    } catch (e) {
-        console.log(`Ошибка загрузки списка грузов: ${e}`)
-        const previewID = cargoId !== undefined ? parseInt(cargoId, 10) - 1 : 0;
-        const mock_cargo = mock_data[previewID]
-        setPage(mock_cargo.title ?? "Без названия", mock_cargo.pk)
-        dispatch(cargoSlice.actions.all_cargoFetched(mock_cargo))
-    }
-}
 
-export const registerSession = (login: string, password: string) => async (dispatch: AppDispatch) => {
+export const registerSession = (f_name : string,l_name :string,login: string, password: string) => async (dispatch: AppDispatch) => {
     const config = {
         method: "post",
-        url: base_url + "users/registration/",
+        url: base_url + "/users/registration/",
         headers: {
             'Content-Type': 'application/json'
         },
         data: {
-            
+            first_name: f_name,
+            last_name : l_name,
             "email": login,
             "passwd": password,
         }
@@ -284,6 +298,7 @@ export const logoutSession = () => async (dispatch: AppDispatch) => {
 
 
 export const loginSession = (login: string, password: string) => async (dispatch: AppDispatch) => {
+    
     const config = {
         method: "post",
         url: base_url + "/users/login/",
@@ -295,7 +310,7 @@ export const loginSession = (login: string, password: string) => async (dispatch
             "passwd": password,
         }
     };
-    console.log(config)
+    // console.log(config)
     try {
         dispatch(userSlice.actions.startProcess())
         const response = await axios<IAuthResponse>(config);
@@ -310,6 +325,7 @@ export const loginSession = (login: string, password: string) => async (dispatch
         setTimeout(() => {
             dispatch(userSlice.actions.resetStatuses());
         }, 6000);
+        
     } catch (e) {
         dispatch(userSlice.actions.setError(`${e}`));
     }

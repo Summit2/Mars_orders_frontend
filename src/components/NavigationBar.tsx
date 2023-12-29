@@ -47,7 +47,7 @@ const NavigationBar: FC<NavigationBarProps> = ({handleSearchValue}) => {
                         </Nav.Item>
                         <Nav.Item>
                                 <Link to="/request" className="nav-link">
-                                    Заявка на заказ
+                                    Заказы
                                 </Link>
                             </Nav.Item>
                     </Nav>
