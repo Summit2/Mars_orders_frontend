@@ -33,7 +33,9 @@ const CargoList: FC<CargoListProps> = ({ setPage, searchValue, resetSearchValue 
                 <div className="add-button-container">
                     {isAuth ? (<button
                         className="add-button_auth"  
+                        onClick={() => navigate(`/orderDraft`)}
                     >
+                        
                         {/* Заявка (пусто) */}
                     </button>) :
                     <button

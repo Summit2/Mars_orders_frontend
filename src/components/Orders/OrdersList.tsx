@@ -27,19 +27,7 @@ const OrdersList: FC<OrdersListProps> = ({}) => {
     dispatch(fetchOrders());
   }, []);
 
-  const formatDate = (jsonDate) => {
-    if (!jsonDate) {
-      return null;
-    }
-
-    const dateObject = new Date(jsonDate);
-
-    return dateObject.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  };
+  
 
   return (
     <div>
@@ -52,7 +40,7 @@ const OrdersList: FC<OrdersListProps> = ({}) => {
             <th>ID заказа</th>
               <th>Статус заказа</th>
               <th>Менеджер</th>
-              <th>Дата создания</th>
+              <th>Дата формирования</th>
             </tr>
           </thead>
           <tbody>
@@ -66,7 +54,7 @@ const OrdersList: FC<OrdersListProps> = ({}) => {
                          <td>{i+1}</td>
                       <td>{order.order_status}</td>
                       <td>{order.moderator_email ?? "-"}</td>
-                      <td>{convertInputFormatToServerDate(order.date_create)}</td>
+                      <td>{convertInputFormatToServerDate(order.date_accept) ?? "-"}</td>
                     </tr>
                   );
                 }

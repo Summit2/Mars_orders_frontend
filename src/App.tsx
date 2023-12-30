@@ -11,8 +11,9 @@ import OrdersList from "./components/Orders/OrdersList.tsx";
 
 function App() {
     const cargoPage = {name: 'Грузы', to: 'cargo'};
+    const ordersPage = {name: 'Заказы', to: 'orders'};
     const [searchValue, setSearchValue] = useState('')
-    const [pages, setPage] = useState<IBreadCrumb[]>([cargoPage])
+    const [pages, setPage] = useState<IBreadCrumb[]>([cargoPage, ordersPage])
     const addPage = (newPage: IBreadCrumb[]) => {
         setPage(newPage);
     };
@@ -55,6 +56,11 @@ function App() {
                            }
                     />
                     <Route path="/orders"
+                           element={
+                               <OrdersList/>
+                           }
+                    />
+                     <Route path="/orderDraft"
                            element={
                                <OrdersList/>
                            }
