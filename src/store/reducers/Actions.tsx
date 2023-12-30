@@ -79,10 +79,7 @@ export const addCargoIntoOrder = (cargoId: number) => async (dispatch: AppDispat
         headers: {
             Cookies: `session_key=${accessToken}`,
         },
-        // data: {
-        //     city_id: cityId,
-        //     serial_number: serialNumber
-        // }
+     
     }
 
     try {
@@ -157,6 +154,7 @@ export const deleteOrder = (id_order: number) => async (dispatch: AppDispatch) =
 // }
 
 export const fetchOrders = () => async (dispatch: AppDispatch) => {
+    // console.log('fetchOrders')
     const accessToken = Cookies.get('session_key');
     dispatch(userSlice.actions.setAuthStatus(accessToken != null && accessToken != ""));
     try {
@@ -166,10 +164,10 @@ export const fetchOrders = () => async (dispatch: AppDispatch) => {
                 Cookies: `session_key=${accessToken}`,
             }
         });
-
+        // console.log(response.data)
         const transformedResponse: IRequest = {
-            orders: response.data.orders, // ????
-            status: response.data.status
+            orders: response.data, // ????
+            status: response.status
         };
 
         dispatch(orderSlice.actions.ordersFetched(transformedResponse))

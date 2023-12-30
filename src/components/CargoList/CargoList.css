@@ -17,20 +17,44 @@ body {
   }
   
   .add-button_auth {
-    background-color: rgb(22, 46, 167);
+    /* background-color: rgb(68, 90, 198);
     color: white;
     padding: 10px 20px;
     border: black;
     border-radius: 5px;
+    cursor: pointer; */
+    
+    background-color: bisque;
+
+    width: 60px; /* Adjust the width as needed */
+    height: 60px; /* Adjust the height as needed */
+    
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: none;
     cursor: pointer;
+    background-image: url('cart_empty.png'); 
+
+  }
+  button_not_empty{
+  background-image: url('cart.png'); 
   }
   .add-button_not_auth 
   {
-    background-color: rgba(255, 255, 255, 0.416);
+    /* background-color: rgba(255, 255, 255, 0.416);
     color: black;
     padding: 10px 20px;
     border: black;
     border-radius: 5px;
-    cursor: pointer;
+    cursor: pointer; */
+    background-color: bisque;
+    
+    width: 60px; /* Adjust the width as needed */
+    height: 60px; /* Adjust the height as needed */
+    background-image: url('cart_empty.png'); 
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: none;
+ 
   }
   

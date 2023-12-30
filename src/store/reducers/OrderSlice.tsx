@@ -2,14 +2,14 @@ import {IDeleteCargofromOrder, IRequest} from "../../models/data.ts";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 interface orderState {
-    order: IRequest | null;
+    orders: IRequest | null;
     isLoading: boolean;
     error: string;
     success: string;
 }
 
 const initialState: orderState = {
-    order: null,
+    orders: null,
     isLoading: false,
     error: '',
     success: ''
@@ -25,7 +25,7 @@ export const orderSlice = createSlice({
         ordersFetched(state, action: PayloadAction<IRequest>) {
             state.isLoading = false
             state.error = ''
-            state.order = action.payload
+            state.orders = action.payload
         },
         ordersDeleteSuccess(state, action: PayloadAction<IDeleteCargofromOrder>) {
             state.isLoading = false

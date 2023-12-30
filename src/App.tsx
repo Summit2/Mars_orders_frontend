@@ -7,6 +7,7 @@ import BreadCrumbs, {IBreadCrumb} from "./components/BreadCrumbs/BreadCrumbs.tsx
 // import RequestView from "./components/RequestView/RequestView.tsx";
 import LoginPage from "./components/LoginPage/LoginPage.tsx";
 import RegisterPage from "./components/RegisterPage/RegisterPage.tsx";
+import OrdersList from "./components/Orders/OrdersList.tsx";
 
 function App() {
     const cargoPage = {name: 'Грузы', to: 'cargo'};
@@ -51,6 +52,11 @@ function App() {
                     <Route path="/register"
                            element={
                                <RegisterPage/>
+                           }
+                    />
+                    <Route path="/orders"
+                           element={
+                               <OrdersList/>
                            }
                     />
                 </Routes>

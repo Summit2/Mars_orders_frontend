@@ -45,11 +45,12 @@ const NavigationBar: FC<NavigationBarProps> = ({handleSearchValue}) => {
                         <Nav.Item>
                             <Link to="/cargo/" className="nav-link ps-0">Список грузов</Link>
                         </Nav.Item>
+                        {isAuth && (
                         <Nav.Item>
-                                <Link to="/request" className="nav-link">
+                                <Link to="/orders" className="nav-link">
                                     Заказы
                                 </Link>
-                            </Nav.Item>
+                            </Nav.Item>) }
                     </Nav>
                     <Form onSubmit={handleSearch} className="d-flex mb-1">
                         <FormControl

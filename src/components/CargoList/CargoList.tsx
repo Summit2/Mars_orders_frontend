@@ -18,7 +18,7 @@ interface CargoListProps {
 
 const CargoList: FC<CargoListProps> = ({ setPage, searchValue, resetSearchValue }) => {
     const dispatch = useAppDispatch();
-    const { all_cargo, isLoading, error, success } = useAppSelector(state => state.cargoReducer);
+    const { all_cargo, isLoading} = useAppSelector(state => state.cargoReducer);
     const { isAuth } = useAppSelector(state => state.userReducer);
     const navigate = useNavigate();
 
@@ -34,19 +34,18 @@ const CargoList: FC<CargoListProps> = ({ setPage, searchValue, resetSearchValue 
                     {isAuth ? (<button
                         className="add-button_auth"  
                     >
-                        Заявка (пусто)
+                        {/* Заявка (пусто) */}
                     </button>) :
                     <button
                         className="add-button_not_auth"  
                     >
-                        Заявка
+                        {/* Заявка */}
                     </button> }
 
                 </div>
             
             {isLoading}
-            {/* {error != "" && <MyComponent isError={true} message={error}/>}
-            {success != "" && <MyComponent isError={false} message={success}/>} */}
+            
 
             <List items={all_cargo} renderItem={(cargo: CargoItem) =>
                 <CItem
