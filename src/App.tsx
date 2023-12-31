@@ -8,6 +8,7 @@ import BreadCrumbs, {IBreadCrumb} from "./components/BreadCrumbs/BreadCrumbs.tsx
 import LoginPage from "./components/LoginPage/LoginPage.tsx";
 import RegisterPage from "./components/RegisterPage/RegisterPage.tsx";
 import OrdersList from "./components/Orders/OrdersList.tsx";
+import OrderDraft from "./components/OrderDraft/OrderDraft.tsx";
 
 function App() {
     const cargoPage = {name: 'Грузы', to: 'cargo'};
@@ -62,7 +63,7 @@ function App() {
                     />
                      <Route path="/orderDraft"
                            element={
-                               <OrdersList/>
+                               <OrderDraft/>
                            }
                     />
                 </Routes>

@@ -66,7 +66,7 @@ const NavigationBar: FC<NavigationBarProps> = ({handleSearchValue}) => {
                     {isAuth ? (
                             <Nav className="ms-2 mb-1">
                                 <Nav.Item>
-                                    <Button variant="outline-light" onClick={handleLogout}>
+                                    <Button variant="btn btn-outline-primary" onClick={handleLogout}>
                                         Выйти
                                     </Button>
                                 </Nav.Item>
@@ -75,7 +75,7 @@ const NavigationBar: FC<NavigationBarProps> = ({handleSearchValue}) => {
                             <>
                                 <Nav className="ms-2 mb-1">
                                     <Nav.Item>
-                                        <Link to="/login" className="btn btn-outline-light">
+                                        <Link to="/login" className="btn btn-outline-primary">
                                             Войти
                                         </Link>
                                     </Nav.Item>

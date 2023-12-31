@@ -36,12 +36,12 @@ const CargoList: FC<CargoListProps> = ({ setPage, searchValue, resetSearchValue 
                         onClick={() => navigate(`/orderDraft`)}
                     >
                         
-                        {/* Заявка (пусто) */}
+                        
                     </button>) :
                     <button
                         className="add-button_not_auth"  
                     >
-                        {/* Заявка */}
+                      
                     </button> }
 
                 </div>

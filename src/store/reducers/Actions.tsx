@@ -31,8 +31,9 @@ export const fetchCargo = (searchValue?: string) => async (dispatch: AppDispatch
             },
            
         });
-        console.log(response)
+        // console.log(response.data.id_order_draft)
         dispatch(cargoSlice.actions.all_cargoFetched(response.data.data))
+        dispatch(orderSlice.actions.orderDraftFetched(response.data.id_order_draft))
     } catch (e) {
         dispatch(cargoSlice.actions.all_cargoFetchedError(`Ошибка: ${e}`))
         dispatch(cargoSlice.actions.all_cargoFetched(filterMockData(searchValue)))

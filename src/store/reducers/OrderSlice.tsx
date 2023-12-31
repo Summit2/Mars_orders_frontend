@@ -3,6 +3,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 interface orderState {
     orders: IRequest | null;
+    id_order_draft: number | null;
     isLoading: boolean;
     error: string;
     success: string;
@@ -10,6 +11,7 @@ interface orderState {
 
 const initialState: orderState = {
     orders: null,
+    id_order_draft: null,
     isLoading: false,
     error: '',
     success: ''
@@ -46,6 +48,9 @@ export const orderSlice = createSlice({
             state.isLoading = false
             state.error = action.payload
         },
+        orderDraftFetched(state, action: PayloadAction<number>){
+            state.id_order_draft = action.payload
+        }
     },
 })
 
