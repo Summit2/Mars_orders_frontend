@@ -37,6 +37,16 @@ export const cargoSlice = createSlice({
             state.error = ''
             state.success = ''
         },
+        all_cargoLoading(state)
+        {
+            state.isLoading = true
+            
+        },
+        all_cargoLoaded(state)
+        {
+            state.isLoading = true
+            
+        },
         all_cargoFetched(state, action: PayloadAction<CargoItem[]>) {
             state.isLoading = false
             state.all_cargo = action.payload

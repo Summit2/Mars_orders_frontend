@@ -30,7 +30,7 @@ const CargoList: FC<CargoListProps> = ({ setPage, searchValue, resetSearchValue 
 
     return (
         <>
-            
+             
                 <div className="add-button-container">
                     {id_order_draft!=null ? (
                         
@@ -46,13 +46,9 @@ const CargoList: FC<CargoListProps> = ({ setPage, searchValue, resetSearchValue 
                     <button className="add-button_not_auth"  ></button> 
                     )}
 
-                   
-
-
-
                 </div>
             
-            {isLoading}
+            
             
 
             <List items={all_cargo} renderItem={(cargo: CargoItem) =>

@@ -89,11 +89,13 @@ export const addCargoIntoOrder = (cargoId: number) => async (dispatch: AppDispat
     }
 
     try {
+        // dispatch(cargoSlice.actions.all_cargoLoading())
         dispatch(cargoSlice.actions.all_cargoFetching())
         const response = await axios(config);
         const errorText = response.data.description ?? ""
         const successText = errorText || `Груз c id_cargo="${cargoId}" добавлен`
         dispatch(cargoSlice.actions.cargoAddedIntoOrder([errorText, successText]));
+        // dispatch(cargoSlice.actions.all_cargoLoaded())
         setTimeout(() => {
             dispatch(cargoSlice.actions.cargoAddedIntoOrder(['', '']));
         }, 6000);
@@ -176,9 +178,11 @@ export const makeOrder= (IdOrder : number) => async (dispatch: AppDispatch) => {
         if (successText != "") {
             dispatch(fetchOrders())
         }
-        setTimeout(() => {
-            dispatch(orderSlice.actions.ordersUpdated(['', '']));
-        }, 6000);
+        // setTimeout(() => {
+        //     dispatch(orderSlice.actions.ordersUpdated(['', '']));
+        // }, 6000);
+        dispatch(orderSlice.actions.OrderDraftIdFetched(null));
+        dispatch(orderSlice.actions.DataOrderDraftFetched(null));
     } catch (e) {
         dispatch(orderSlice.actions.ordersDeleteError(`${e}`))
     }

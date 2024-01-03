@@ -24,6 +24,7 @@ const OrderDraft: FC<OrdersListProps> = () => {
 
  if (isAuth==false || isAuth==undefined || id_order_draft==null || id_order_draft==undefined )//|| order_draft_data == null ||order_draft_data == undefined)
  {
+    // alert('empty')
     return ( <div>Пусто
     </div>)
  }
@@ -31,27 +32,27 @@ const OrderDraft: FC<OrdersListProps> = () => {
 console.log(order_draft_data)
 
  
-  
-
-
-  const handleMakeOrder = async () => {
-    // await sendBreach()
-    dispatch(makeOrder(id_order_draft))
-    navigate("/orders")
-}
-const handleDeleteOrder = async () => {
-    // await deleteBreach()
-    dispatch(deleteOrderById(id_order_draft))
-    
-    navigate("/cargo")
-}
 useEffect(() => {
     // setPage()
     
     dispatch(fetchDraftOrder(id_order_draft));
     // console.log(order_draft_data)
      
-  }, []);
+  }, [dispatch, id_order_draft]);
+
+
+
+  const handleMakeOrder = async () => {
+    
+    dispatch(makeOrder(id_order_draft))
+    navigate("/orders")
+}
+const handleDeleteOrder = async () => {
+   
+    dispatch(deleteOrderById(id_order_draft))
+    
+    navigate("/cargo")
+}
 
  const handleDeleteFromOrder = async (id_cargo:number) => {
     dispatch(DeleteCargoFromOrder(id_cargo));

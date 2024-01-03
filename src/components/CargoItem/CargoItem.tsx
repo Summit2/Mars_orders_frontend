@@ -16,6 +16,8 @@ interface CargoItemProps {
 const CItem: FC<CargoItemProps> = ({cargo, onClick, isServer, reloadPage, is_draft}) => {
     const dispatch = useAppDispatch();
     const {success, isAuth} = useAppSelector(state => state.userReducer)
+    // const { isLoading} = useAppSelector(state => state.cargoReducer);
+
 
 
     const handleAddToOrder = (cargoID : number) => {
