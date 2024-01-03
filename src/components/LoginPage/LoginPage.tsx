@@ -3,7 +3,7 @@ import {Container, Row, Col, Form, Button} from 'react-bootstrap';
 import {useAppDispatch, useAppSelector} from "../../hooks/redux.ts";
 import {loginSession} from "../../store/reducers/Actions.tsx";
 import {Link} from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 interface LoginPageProps {
 
 }
@@ -13,7 +13,7 @@ const LoginPage: FC<LoginPageProps> = () => {
     const {error, isAuth} = useAppSelector(state => state.userReducer)
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
-
+    const navigate = useNavigate()
     const handleSubmit = () => {
         if (!login || !password) {
             alert('Введите логин и пароль');
@@ -22,11 +22,11 @@ const LoginPage: FC<LoginPageProps> = () => {
         dispatch(loginSession(login, password))
     };
 
-    if (isAuth) {
-        return <Link to="/cities" className="btn btn-outline-danger">
-            Смотреть города
-        </Link>
+    const handleLogin = async () => {
+        await handleSubmit()
+        navigate("/cargo")
     }
+
 
     return (
         <>
@@ -54,7 +54,7 @@ const LoginPage: FC<LoginPageProps> = () => {
                                 required
                             />
 
-                            <Button variant="primary" type="submit" className="w-100 mt-4" onClick={handleSubmit}
+                            <Button variant="primary" type="submit" className="w-100 mt-4" onClick={handleLogin}
                                     style={{borderRadius: '10px'}}>
                                 Войти
                             </Button>

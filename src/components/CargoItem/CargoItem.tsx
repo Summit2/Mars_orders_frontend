@@ -10,9 +10,10 @@ interface CargoItemProps {
     onClick: (num: number) => void,
     isServer: boolean
     reloadPage: () => void
+    is_draft: boolean
 }
 
-const CItem: FC<CargoItemProps> = ({cargo, onClick, isServer, reloadPage}) => {
+const CItem: FC<CargoItemProps> = ({cargo, onClick, isServer, reloadPage, is_draft}) => {
     const dispatch = useAppDispatch();
     const {success, isAuth} = useAppSelector(state => state.userReducer)
 
@@ -61,18 +62,21 @@ const CItem: FC<CargoItemProps> = ({cargo, onClick, isServer, reloadPage}) => {
                 // onClick={() => onClick(cargo.pk)}
                 id={`photo-${cargo.pk}`}
             />
-            {isServer && (
+            {/* {isServer && (
                 <div className="circle" onClick={deleteClickHandler}>
                     <button type="submit" name="del_btn">&#10060;</button>
                 </div>
-            )}
+            )} */}
             <div className="info-button-container">
             {isAuth && (
                 //  onClick={() => onClick(cargo.pk)}
+                
                 <button className="info-button" onClick={() => handleAddToOrder(cargo.pk)} >
                     Добавить
                 </button>
             )}
+
+            
                 <button className="info-button" onClick={() => onClick(cargo.pk)}>
                     Подробнее...
                 </button>

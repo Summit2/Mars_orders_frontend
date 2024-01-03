@@ -7,6 +7,7 @@ import {
     IDeleteCargofromOrder,
     IOrderResponse, IRegisterResponse,
     IRequest,
+    IOrder,
     mock_data
 } from "../../models/data.ts";
 import Cookies from 'js-cookie';
@@ -42,6 +43,9 @@ export const fetchCargo = (searchValue?: string) => async (dispatch: AppDispatch
 
 export const fetchExactCargo = (
     cargoId: string,
+﻿
+
+
     setPage: (name: string, id: number) => void
 ) => async (dispatch: AppDispatch) => {
     try {
@@ -172,6 +176,29 @@ export const fetchOrders = () => async (dispatch: AppDispatch) => {
         };
 
         dispatch(orderSlice.actions.ordersFetched(transformedResponse))
+    } catch (e) {
+        dispatch(orderSlice.actions.ordersFetchedError(`${e}`))
+    }
+}
+
+export const fetchExactOrder = (id_order: number) => async (dispatch: AppDispatch) => {
+    // console.log('fetchOrders')
+    const accessToken = Cookies.get('session_key');
+    dispatch(userSlice.actions.setAuthStatus(accessToken != null && accessToken != ""));
+    try {
+        dispatch(orderSlice.actions.ordersFetching())
+        const response = await axios.get<IOrder>(base_url + `/order/${id_order}`, {
+            headers: {
+                Cookies: `session_key=${accessToken}`,
+            }
+        });
+        // console.log(response.data)
+        // const transformedResponse: IRequest = {
+        //     orders: response.data, // ????
+        //     status: response.status
+        // };
+
+        dispatch(orderSlice.actions.ordersFetched(transformedResponse)) //теперь исправить это на обновление текущего заказа
     } catch (e) {
         dispatch(orderSlice.actions.ordersFetchedError(`${e}`))
     }
