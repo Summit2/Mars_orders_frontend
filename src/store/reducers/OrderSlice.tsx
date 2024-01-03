@@ -1,10 +1,10 @@
-import {IDeleteCargofromOrder, IDraftOrder, IRequest, CargoItem} from "../../models/data.ts";
+import {IDeleteCargofromOrder, IRequest, IOrder} from "../../models/data.ts";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 interface orderState {
     orders: IRequest | null;
     id_order_draft: number | null;
-    order_draft_data: CargoItem[] | null;
+    order_draft_data: IOrder | null;
     isLoading: boolean;
     error: string;
     success: string;
@@ -51,9 +51,13 @@ export const orderSlice = createSlice({
             state.error = action.payload
         },
 
-        orderDraftFetched(state, action: PayloadAction<IDraftOrder>){
-            state.order_draft = action.payload
+        OrderDraftIdFetched(state, action: PayloadAction<number>){
+            state.id_order_draft = action.payload
         },
+        DataOrderDraftFetched(state, action:PayloadAction<IOrder>)
+        {
+            state.order_draft_data = action.payload
+        }
         
     
     },

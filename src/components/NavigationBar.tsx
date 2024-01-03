@@ -23,14 +23,16 @@ const NavigationBar: FC<NavigationBarProps> = ({handleSearchValue}) => {
     //     const inputValue = (e.currentTarget.elements.namedItem('search') as HTMLInputElement)?.value;
     //     handleSearchValue(inputValue);
     // };
+
     const dispatch = useAppDispatch()
-    const {isLoading, success, error, isAuth} = useAppSelector(state => state.userReducer)
+    const {isAuth} = useAppSelector(state => state.userReducer)
 
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const inputValue = (e.currentTarget.elements.namedItem('search') as HTMLInputElement)?.value;
         handleSearchValue(inputValue);
     };
+    
 
     const handleLogout = () => {
         dispatch(logoutSession())

@@ -19,7 +19,7 @@ interface CargoListProps {
 const CargoList: FC<CargoListProps> = ({ setPage, searchValue, resetSearchValue }) => {
     const dispatch = useAppDispatch();
     const { all_cargo, isLoading} = useAppSelector(state => state.cargoReducer);
-    const { order_draft } = useAppSelector((state) => state.orderReducer);
+    // const { order_draft } = useAppSelector((state) => state.orderReducer);
     const { isAuth } = useAppSelector(state => state.userReducer);
     const navigate = useNavigate();
 

@@ -16,7 +16,7 @@ interface OrdersListProps {
 
 const OrdersList: FC<OrdersListProps> = ({}) => {
   const dispatch = useAppDispatch();
-  const { orders, isLoading, error, success } = useAppSelector((state) => state.orderReducer);
+  const { orders, isLoading } = useAppSelector((state) => state.orderReducer);
   const { isAuth } = useAppSelector((state) => state.userReducer);
   const navigate = useNavigate();
 

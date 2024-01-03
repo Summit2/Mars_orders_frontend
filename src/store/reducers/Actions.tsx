@@ -8,7 +8,8 @@ import {
     IOrderResponse, IRegisterResponse,
     IRequest,
     IOrder,
-    mock_data
+    mock_data,
+    CargoItem
 } from "../../models/data.ts";
 import Cookies from 'js-cookie';
 import {cargoSlice} from "./CargoSlice.tsx"
@@ -32,9 +33,9 @@ export const fetchCargo = (searchValue?: string) => async (dispatch: AppDispatch
             },
            
         });
-        // console.log(response.data.id_order_draft)
+        console.log('draftId: ',response.data.id_order_draft)
         dispatch(cargoSlice.actions.all_cargoFetched(response.data.data))
-        dispatch(orderSlice.actions.orderDraftFetched(response.data.id_order_draft))
+        dispatch(orderSlice.actions.OrderDraftIdFetched(response.data.id_order_draft))
     } catch (e) {
         dispatch(cargoSlice.actions.all_cargoFetchedError(`Ошибка: ${e}`))
         dispatch(cargoSlice.actions.all_cargoFetched(filterMockData(searchValue)))
@@ -43,7 +44,7 @@ export const fetchCargo = (searchValue?: string) => async (dispatch: AppDispatch
 
 export const fetchExactCargo = (
     cargoId: string,
-﻿
+
 
 
     setPage: (name: string, id: number) => void
@@ -54,7 +55,7 @@ export const fetchExactCargo = (
         const response = await axios.get<ICargoResponse>(base_url + `/cargo/${cargoId}`)
         // console.log(response)
         const cargo = response.data
-        console.log(cargo)
+        // console.log(cargo)
         setPage(cargo.title ?? "Без названия", cargo.pk)
         dispatch(cargoSlice.actions.cargoFetched(cargo))
     } catch (e) {
@@ -181,27 +182,28 @@ export const fetchOrders = () => async (dispatch: AppDispatch) => {
     }
 }
 
-export const fetchExactOrder = (id_order: number) => async (dispatch: AppDispatch) => {
-    // console.log('fetchOrders')
+export const fetchDraftOrder = (id_order_draft: number ) => async (dispatch: AppDispatch) => {
+
     const accessToken = Cookies.get('session_key');
     dispatch(userSlice.actions.setAuthStatus(accessToken != null && accessToken != ""));
     try {
-        dispatch(orderSlice.actions.ordersFetching())
-        const response = await axios.get<IOrder>(base_url + `/order/${id_order}`, {
+        
+
+        const response = await axios.get<IOrder>(base_url + `/order/${id_order_draft}`, {
             headers: {
                 Cookies: `session_key=${accessToken}`,
             }
         });
+        
+        
         // console.log(response.data)
-        // const transformedResponse: IRequest = {
-        //     orders: response.data, // ????
-        //     status: response.status
-        // };
-
-        dispatch(orderSlice.actions.ordersFetched(transformedResponse)) //теперь исправить это на обновление текущего заказа
+        
+        dispatch(orderSlice.actions.DataOrderDraftFetched(response.data))
+        
     } catch (e) {
-        dispatch(orderSlice.actions.ordersFetchedError(`${e}`))
+        console.log(e)
     }
+    
 }
 
 export const deleteOrderById = (id_order: number) => async (dispatch: AppDispatch) => {
