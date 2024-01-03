@@ -18,7 +18,7 @@ interface OrdersListProps {
 
 const OrderDraft: FC<OrdersListProps> = () => {
   const dispatch = useAppDispatch();
-  const { id_order_draft, order_draft_data} = useAppSelector((state) => state.orderReducer);
+  const { id_order_draft, order_draft_data, isLoading} = useAppSelector((state) => state.orderReducer);
   const { isAuth } = useAppSelector((state) => state.userReducer);
   const navigate = useNavigate();
 
@@ -38,7 +38,7 @@ useEffect(() => {
     dispatch(fetchDraftOrder(id_order_draft));
     // console.log(order_draft_data)
      
-  }, [dispatch, id_order_draft]);
+  });
 
 
 
