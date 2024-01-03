@@ -1,0 +1,27 @@
+.buttons-wrapper {
+  display: flex;
+  justify-content: center; 
+  gap: 50px;
+}
+
+.send-button,
+.del-button {
+  background-color: #4caf50; 
+  color: white;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.del-button {
+  background-color: #f44336; 
+}
+.del-from-order-button {
+  background-color: #a5bdec; 
+  width: 65px; 
+  height: 30px;
+  
+}

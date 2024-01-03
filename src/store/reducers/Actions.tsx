@@ -128,36 +128,61 @@ export const deleteOrder = (id_order: number) => async (dispatch: AppDispatch) =
         dispatch(orderSlice.actions.ordersDeleteError(`${e}`))
     }
 }
+export const DeleteCargoFromOrder = (cargoId: number) => async (dispatch: AppDispatch) => {
+    const accessToken = Cookies.get('session_key');
+    const config = {
+        method: "delete",
+        url: `api/update_order/${cargoId}/delete/`,
+        headers: {
+            Cookies: `session_key=${accessToken}`,
+        },
+     
+    }
 
-// export const makeOrder= () => async (dispatch: AppDispatch) => {
-//     const accessToken = Cookies.get('session_key');
+    try {
+        dispatch(cargoSlice.actions.all_cargoFetching())
+        const response = await axios(config);
+        const errorText = response.data.description ?? ""
+        const successText = errorText || `Груз c id_cargo="${cargoId}" добавлен в заказ`
+        dispatch(cargoSlice.actions.cargoAddedIntoOrder([errorText, successText]));
+        // setTimeout(() => {
+        //     dispatch(cargoSlice.actions.cargoAddedIntoOrder(['', '']));
+        // }, 6000);
+    } catch (e) {
+        // dispatch(cargoSlice.actions.all_cargoFetchedError(`${e}`))
+    }
+}
 
-//     const config = {
-//         method: "put",
-//         url: "/api/v3/hikes/update/status-for-user",
-//         headers: {
-//             Cookies: `session_key=${accessToken}`,
-//         },
-//         data: {
-//             status_id: 2
-//         }
-//     }
-//     try {
-//         dispatch(orderSlice.actions.ordersFetching())
-//         const response = await axios(config);
-//         const errorText = response.data.description ?? ""
-//         const successText = errorText || `Заявка создана`
-//         dispatch(orderSlice.actions.ordersUpdated([errorText, successText]));
-//         if (successText != "") {
-//             dispatch(fetchOrders())
-//         }
-//         setTimeout(() => {
-//             dispatch(orderSlice.actions.ordersUpdated(['', '']));
-//         }, 6000);
-//     } catch (e) {
-//         dispatch(orderSlice.actions.ordersDeleteError(`${e}`))
-//     }
-// }
+export const makeOrder= (IdOrder : number) => async (dispatch: AppDispatch) => {
+    const accessToken = Cookies.get('session_key');
+
+    const config = {
+        method: "put",
+        url: `api/update_status/${IdOrder}/set_user_status/`,
+        headers: {
+            Cookies: `session_key=${accessToken}`,
+        },
+        data : {
+            "status" : 'в работе'
+        }
+        
+    }
+    try {
+        dispatch(orderSlice.actions.ordersFetching())
+        const response = await axios(config);
+        const errorText = response.data.description ?? ""
+        const successText = errorText || `Заявка создана`
+        dispatch(orderSlice.actions.ordersUpdated([errorText, successText]));
+        if (successText != "") {
+            dispatch(fetchOrders())
+        }
+        setTimeout(() => {
+            dispatch(orderSlice.actions.ordersUpdated(['', '']));
+        }, 6000);
+    } catch (e) {
+        dispatch(orderSlice.actions.ordersDeleteError(`${e}`))
+    }
+}
 
 export const fetchOrders = () => async (dispatch: AppDispatch) => {
     // console.log('fetchOrders')
@@ -196,7 +221,7 @@ export const fetchDraftOrder = (id_order_draft: number ) => async (dispatch: App
         });
         
         
-        // console.log(response.data)
+        console.log(response.data)
         
         dispatch(orderSlice.actions.DataOrderDraftFetched(response.data))
         

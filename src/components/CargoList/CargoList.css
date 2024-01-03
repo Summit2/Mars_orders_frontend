@@ -16,7 +16,7 @@ body {
     margin-right: 20px;
   }
   
-  .add-button_auth {
+  .cart-button{
     /* background-color: rgb(68, 90, 198);
     color: white;
     padding: 10px 20px;
@@ -33,11 +33,11 @@ body {
     background-repeat: no-repeat;
     border: none;
     cursor: pointer;
-    background-image: url('cart_empty.png'); 
+    background-image: url('cart.png'); 
 
   }
-  button_not_empty{
-  background-image: url('cart.png'); 
+  .button_empty{
+  background-image: url('cart_empty.png'); 
   }
   .add-button_not_auth 
   {

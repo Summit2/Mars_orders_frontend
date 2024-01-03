@@ -25,6 +25,7 @@ const OrdersList: FC<OrdersListProps> = ({}) => {
   useEffect(() => {
     // setPage()
     dispatch(fetchOrders());
+
   }, []);
 
   
@@ -39,6 +40,7 @@ const OrdersList: FC<OrdersListProps> = ({}) => {
             <tr>
             <th>ID заказа</th>
               <th>Статус заказа</th>
+              <th>Грузы в заказе</th>
               <th>Менеджер</th>
               <th>Дата формирования</th>
             </tr>
@@ -53,6 +55,7 @@ const OrdersList: FC<OrdersListProps> = ({}) => {
                     <tr key={order.pk}>
                          <td>{i+1}</td>
                       <td>{order.order_status}</td>
+                      <td>\грузы\</td>
                       <td>{order.moderator_email ?? "-"}</td>
                       <td>{convertInputFormatToServerDate(order.date_accept) ?? "-"}</td>
                     </tr>

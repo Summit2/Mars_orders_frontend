@@ -19,7 +19,7 @@ interface CargoListProps {
 const CargoList: FC<CargoListProps> = ({ setPage, searchValue, resetSearchValue }) => {
     const dispatch = useAppDispatch();
     const { all_cargo, isLoading} = useAppSelector(state => state.cargoReducer);
-    // const { order_draft } = useAppSelector((state) => state.orderReducer);
+    const { id_order_draft } = useAppSelector((state) => state.orderReducer);
     const { isAuth } = useAppSelector(state => state.userReducer);
     const navigate = useNavigate();
 
@@ -32,20 +32,19 @@ const CargoList: FC<CargoListProps> = ({ setPage, searchValue, resetSearchValue 
         <>
             
                 <div className="add-button-container">
-                    { isAuth? (
+                    {id_order_draft!=null ? (
                         
                         
-
+                    // <div className='button_empty'>
                     <button
-                        className="add-button_auth"  
+                        className="cart-button"  
                         onClick={() => navigate(`/orderDraft`)}>  
                     </button>
+                    // </div>
                     ) : (
-                    <button
-                        className="add-button_not_auth"  
-                    >
-                      
-                    </button> )}
+                        
+                    <button className="add-button_not_auth"  ></button> 
+                    )}
 
                    
 
