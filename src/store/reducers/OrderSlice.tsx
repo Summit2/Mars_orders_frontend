@@ -42,6 +42,9 @@ export const orderSlice = createSlice({
             state.error = action.payload[0]
             state.success = action.payload[1]
         },
+        ordersLoaded(state){
+            state.isLoading = false
+        },
         ordersDeleteError(state, action: PayloadAction<string>) {
             state.isLoading = false
             state.error = action.payload
@@ -51,10 +54,10 @@ export const orderSlice = createSlice({
             state.error = action.payload
         },
 
-        OrderDraftIdFetched(state, action: PayloadAction<number>){
+        OrderDraftIdFetched(state, action: PayloadAction<number | null>){
             state.id_order_draft = action.payload
         },
-        DataOrderDraftFetched(state, action:PayloadAction<IOrder>)
+        DataOrderDraftFetched(state, action:PayloadAction<IOrder | null>)
         {
             state.order_draft_data = action.payload
         }

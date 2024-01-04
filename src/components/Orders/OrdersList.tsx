@@ -55,7 +55,7 @@ const OrdersList: FC<OrdersListProps> = ({}) => {
                     <tr key={order.pk}>
                          <td>{i+1}</td>
                       <td>{order.order_status}</td>
-                      <td>\грузы\</td>
+                      <td>Подробности</td>
                       <td>{order.moderator_email ?? "-"}</td>
                       <td>{convertInputFormatToServerDate(order.date_accept) ?? "-"}</td>
                     </tr>

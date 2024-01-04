@@ -22,7 +22,7 @@ const OrderDraft: FC<OrdersListProps> = () => {
   const { isAuth } = useAppSelector((state) => state.userReducer);
   const navigate = useNavigate();
 
- if (isAuth==false || isAuth==undefined || id_order_draft==null || id_order_draft==undefined )//|| order_draft_data == null ||order_draft_data == undefined)
+ if (isAuth==false || isAuth==undefined || id_order_draft==null)//|| order_draft_data == null ||order_draft_data == undefined)
  {
     // alert('empty')
     return ( <div>Пусто
@@ -33,30 +33,31 @@ console.log(order_draft_data)
 
  
 useEffect(() => {
-    // setPage()
-    
     dispatch(fetchDraftOrder(id_order_draft));
-    // console.log(order_draft_data)
-     
-  });
+
+    console.log("useEffect in OrderDraft")
+    
+}, []);
 
 
 
-  const handleMakeOrder = async () => {
+  const handleMakeOrder =  () => {
     
     dispatch(makeOrder(id_order_draft))
     navigate("/orders")
 }
-const handleDeleteOrder = async () => {
+const handleDeleteOrder =  () => {
    
     dispatch(deleteOrderById(id_order_draft))
     
     navigate("/cargo")
 }
 
- const handleDeleteFromOrder = async (id_cargo:number) => {
-    dispatch(DeleteCargoFromOrder(id_cargo));
-    dispatch(fetchDraftOrder(id_order_draft));
+ const handleDeleteFromOrder = (id_cargo:number ) => {
+    console.log("handleDeleteFromOrder start")
+    dispatch(DeleteCargoFromOrder(id_cargo, id_order_draft));
+    // dispatch(fetchDraftOrder(id_order_draft));
+    // console.log("handleDeleteFromOrder finish")
  }
   return (
     <div>

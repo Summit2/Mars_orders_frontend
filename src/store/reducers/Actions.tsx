@@ -130,7 +130,7 @@ export const deleteOrder = (id_order: number) => async (dispatch: AppDispatch) =
         dispatch(orderSlice.actions.ordersDeleteError(`${e}`))
     }
 }
-export const DeleteCargoFromOrder = (cargoId: number) => async (dispatch: AppDispatch) => {
+export const DeleteCargoFromOrder = (cargoId: number, id_draft : number) => async (dispatch: AppDispatch) => {
     const accessToken = Cookies.get('session_key');
     const config = {
         method: "delete",
@@ -138,15 +138,23 @@ export const DeleteCargoFromOrder = (cargoId: number) => async (dispatch: AppDis
         headers: {
             Cookies: `session_key=${accessToken}`,
         },
-     
+        
     }
 
     try {
+        // dispatch(orderSlice.actions.ordersFetching())
         dispatch(cargoSlice.actions.all_cargoFetching())
         const response = await axios(config);
         const errorText = response.data.description ?? ""
-        const successText = errorText || `Груз c id_cargo="${cargoId}" добавлен в заказ`
+        const successText = errorText || `Груз c id_cargo="${cargoId}" удален`
         dispatch(cargoSlice.actions.cargoAddedIntoOrder([errorText, successText]));
+        // dispatch(orderSlice.actions.ordersLoaded())
+
+        // dispatch(fetchDraftOrder(id_order_draft));
+        console.log('orderdraft after deleted cargo', response)
+
+        dispatch(fetchDraftOrder(id_draft))
+        // dispatch(fetchDraftOrder(id_order_draft));
         // setTimeout(() => {
         //     dispatch(cargoSlice.actions.cargoAddedIntoOrder(['', '']));
         // }, 6000);
@@ -247,7 +255,7 @@ export const deleteOrderById = (id_order: number) => async (dispatch: AppDispatc
             
         });
         dispatch(orderSlice.actions.ordersDeleteSuccess(response.data))
-        dispatch(fetchOrders())
+        
     } catch (e) {
         dispatch(orderSlice.actions.ordersFetchedError(`${e}`))
     }
