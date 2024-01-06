@@ -263,35 +263,43 @@ export const CancelOrder = (IdOrder : number) => async (dispatch: AppDispatch) =
         dispatch(orderSlice.actions.ordersDeleteError(`${e}`))
     }
 }
-
-export const fetchOrders = () => async (dispatch: AppDispatch) => {
-    // console.log('fetchOrders')
+export const fetchOrders = (date_start: string | null, date_finish: string | null) => async (dispatch: AppDispatch) => {
     const accessToken = Cookies.get('session_key');
+    const isModer = Cookies.get('is_moderator');
 
-    const isModer = Cookies.get('is_moderator')
-        if (isModer=='true') {
-            dispatch(userSlice.actions.setIsModer(true))
-        }
-    // console.log(Cookies.get('is_moderator'))
-    dispatch(userSlice.actions.setAuthStatus(accessToken != null && accessToken != ""));
+    if (isModer === 'true') {
+        dispatch(userSlice.actions.setIsModer(true));
+    }
+
+    dispatch(userSlice.actions.setAuthStatus(accessToken != null && accessToken !== ""));
+    const date_filter = `?date_create=${date_start}&date_finished=${date_finish}`;
+
+    let url = '';
+    if ((date_start !== null && date_start !== undefined && date_start!=='') || (date_finish !== null && date_finish !== undefined && date_finish!=='')) {
+        url = base_url + "/orders" + date_filter;
+    } else {
+        url = base_url + "/orders";
+    }
+
     try {
-        dispatch(orderSlice.actions.ordersFetching())
-        const response = await axios.get<IOrderResponse>(base_url + `/orders`, {
+        dispatch(orderSlice.actions.ordersFetching());
+        const response = await axios.get<IOrderResponse>(url, {
             headers: {
                 Cookies: `session_key=${accessToken}`,
             }
         });
-        // console.log(response.data)
+
         const transformedResponse: IRequest = {
-            orders: response.data, // ????
+            orders: response.data,
             status: response.status
         };
 
-        dispatch(orderSlice.actions.ordersFetched(transformedResponse))
+        dispatch(orderSlice.actions.ordersFetched(transformedResponse));
     } catch (e) {
-        dispatch(orderSlice.actions.ordersFetchedError(`${e}`))
+        dispatch(orderSlice.actions.ordersFetchedError(`${e}`));
     }
 }
+
 
 export const fetchDraftOrder = (id_order_draft: number ) => async (dispatch: AppDispatch) => {
 

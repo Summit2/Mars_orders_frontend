@@ -70,7 +70,7 @@ const handleDeleteOrder =  () => {
  return (
   <div>
     <div>
-      <h3>Оформление заказа</h3>
+    {id_order==id_order_draft ? (<h3>Оформление заказа</h3>) : (<h3>Просмотр заказа</h3>)}
     </div>
 
     <div className="bottom">
@@ -103,8 +103,7 @@ const handleDeleteOrder =  () => {
                        <div className="buttons-wrapper">
                          <button
                            className="del-from-order-button"
-                           onClick={() => handleDeleteFromOrder(cargo.pk)}
-                         >
+                           onClick={() => handleDeleteFromOrder(cargo.pk)}>
                            Убрать
                          </button>
                        </div>
