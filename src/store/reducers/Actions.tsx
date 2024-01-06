@@ -80,6 +80,67 @@ export const fetchExactCargo = (
     }
 }
 
+export const DeleteCargo = (idCargo :number)=> async (dispatch: AppDispatch) => {
+    const accessToken = Cookies.get('session_key')
+    const isModer = Cookies.get('is_moderator')
+    if (isModer=='true') {
+        dispatch(userSlice.actions.setIsModer(true))
+    }
+    dispatch(userSlice.actions.setAuthStatus(accessToken != null && accessToken != ""));
+
+    const config = {
+        method: "delete",
+        url: `/api/cargo/${idCargo}/delete/`,
+        headers: {
+            Cookies: `session_key=${accessToken}`,
+        },
+        
+    }
+    try {
+        dispatch(cargoSlice.actions.all_cargoFetching())
+        const response = await axios(config);
+        const errorText = response.data.description ?? ""
+        const successText = errorText || `Заявка создана`
+        dispatch(cargoSlice.actions.all_cargoFetched())
+        if (successText != "") {
+            dispatch(fetchCargo())
+        }
+    } catch (e) {
+        dispatch(cargoSlice.actions.all_cargoFetchedError(`Ошибка: ${e}`))
+        dispatch(cargoSlice.actions.all_cargoFetched(filterMockData()))
+    }
+}
+
+export const UpdateCargo = (idCargo :number)=> async (dispatch: AppDispatch) => {
+    const accessToken = Cookies.get('session_key')
+    const isModer = Cookies.get('is_moderator')
+    if (isModer=='true') {
+        dispatch(userSlice.actions.setIsModer(true))
+    }
+    dispatch(userSlice.actions.setAuthStatus(accessToken != null && accessToken != ""));
+
+    const config = {
+        method: "delete",
+        url: `/api/cargo/${idCargo}/edit/`,
+        headers: {
+            Cookies: `session_key=${accessToken}`,
+        },
+        
+    }
+    try {
+        dispatch(cargoSlice.actions.all_cargoFetching())
+        const response = await axios(config);
+        const errorText = response.data.description ?? ""
+        const successText = errorText || `Заявка создана`
+        dispatch(cargoSlice.actions.all_cargoFetched())
+        if (successText != "") {
+            dispatch(fetchCargo())
+        }
+    } catch (e) {
+        dispatch(cargoSlice.actions.all_cargoFetchedError(`Ошибка: ${e}`))
+        dispatch(cargoSlice.actions.all_cargoFetched(filterMockData()))
+    }
+}
 export const addCargoIntoOrder = (cargoId: number) => async (dispatch: AppDispatch) => {
     const accessToken = Cookies.get('session_key');
     const config = {
@@ -263,7 +324,7 @@ export const CancelOrder = (IdOrder : number) => async (dispatch: AppDispatch) =
         dispatch(orderSlice.actions.ordersDeleteError(`${e}`))
     }
 }
-export const fetchOrders = (date_start: string | null, date_finish: string | null) => async (dispatch: AppDispatch) => {
+export const fetchOrders = (new_status:string | null, date_start: string | null, date_finish: string | null) => async (dispatch: AppDispatch) => {
     const accessToken = Cookies.get('session_key');
     const isModer = Cookies.get('is_moderator');
 
@@ -272,12 +333,16 @@ export const fetchOrders = (date_start: string | null, date_finish: string | nul
     }
 
     dispatch(userSlice.actions.setAuthStatus(accessToken != null && accessToken !== ""));
-    const date_filter = `?date_create=${date_start}&date_finished=${date_finish}`;
+    const date_filter = `date_create=${date_start}&date_finished=${date_finish}`;
 
-    let url = '';
+    let url = base_url+"/orders?" ;
     if ((date_start !== null && date_start !== undefined && date_start!=='') || (date_finish !== null && date_finish !== undefined && date_finish!=='')) {
-        url = base_url + "/orders" + date_filter;
-    } else {
+        url += date_filter;
+    } 
+    else if (new_status !== null && new_status !== undefined && new_status!=='') {
+        url +=`order_status=${new_status}`;
+    }
+    else{
         url = base_url + "/orders";
     }
 

@@ -25,7 +25,7 @@ const NavigationBar: FC<NavigationBarProps> = ({handleSearchValue}) => {
     // };
 
     const dispatch = useAppDispatch()
-    const {isAuth} = useAppSelector(state => state.userReducer)
+    const {isAuth, is_moderator} = useAppSelector(state => state.userReducer)
 
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -53,7 +53,26 @@ const NavigationBar: FC<NavigationBarProps> = ({handleSearchValue}) => {
                                     Заказы
                                 </Link>
                             </Nav.Item>) }
+                         {isAuth && is_moderator== true && (
+                        <Nav.Item>
+                                <Link to="/cargoTable" className="nav-link">
+                                Таблица грузов 
+                                </Link>
+                                
+                            </Nav.Item>
+                    
+                   
+
+                            ) }
+                            {isAuth && is_moderator== true && (  <Nav.Item>
+                    <Link to="/cargoNew" className="nav-link">
+                    Создать груз
+                    </Link>
+                    
+                </Nav.Item> )}
                     </Nav>
+                    
+                    
                     <Form onSubmit={handleSearch} className="d-flex mb-1">
                         <FormControl
                             id={'search-text-field'}

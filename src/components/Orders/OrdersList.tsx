@@ -8,7 +8,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { registerLocale} from 'react-datepicker';
 import { format } from 'date-fns';
 import ru from 'date-fns/locale/ru';
-import { Form, Row, Col, Button  } from 'react-bootstrap';
+import { Form, Row, Col, Button, Dropdown  } from 'react-bootstrap';
 
 
 registerLocale('ru', ru);
@@ -25,6 +25,7 @@ const OrdersList: FC<OrdersListProps> = ({ setPage }) => {
 
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
+  const [filterStatus, setFilterStatus] = useState<string>('');
 
   if (isAuth == false) {
     return (
@@ -35,27 +36,39 @@ const OrdersList: FC<OrdersListProps> = ({ setPage }) => {
 
   useEffect(() => {
     setPage();
-    dispatch(fetchOrders());
+    dispatch(fetchOrders(filterStatus));
   }, []);
-  const handleFilterDates = () => {
-    // console.log()
-    dispatch(fetchOrders(formatDateToDDMMYYYY(startDate),formatDateToDDMMYYYY(endDate)));
-  }
+ 
   const handleCancelOrder = (id_order :number) => {
     dispatch(CancelOrder(id_order))
   }
   const handleApproveOrder = (id_order :number) => {
     dispatch(ApproveOrder(id_order))
   }
+
+  //date filter
+   const handleFilterDates = () => {
+    // console.log(endDate)
+    dispatch(fetchOrders(filterStatus,formatDateToDDMMYYYY(startDate),formatDateToDDMMYYYY(endDate)));
+  }
   const handleClearFilterDate = () => {
     setStartDate(null);
     setEndDate(null);
+    
 
-    dispatch(fetchOrders());
+    dispatch(fetchOrders(filterStatus));
   }
   const formatDateToDDMMYYYY = (date: Date | null) => {
     return date ? format(date, 'dd.MM.yyyy', { locale: ru }) : '';
   };
+
+
+  //status filter
+  const handleFilterStatus= (new_status:string ) => {
+    setFilterStatus(new_status)
+    dispatch(fetchOrders(new_status));
+  }
+
   return (
     <div>
       <h2>Список заказов</h2>
@@ -96,6 +109,8 @@ const OrdersList: FC<OrdersListProps> = ({ setPage }) => {
           </Form.Group>
         </Col>
       </Row>
+       
+       
       <Button className="btn btn-primary" onClick={handleFilterDates}>
         Отфильтровать по дате
       </Button>
@@ -109,7 +124,24 @@ const OrdersList: FC<OrdersListProps> = ({ setPage }) => {
           <tr>
             <th>ID заказа</th>
             {is_moderator && <th>Пользователь</th>}
-            <th>Статус заказа</th>
+            {is_moderator ? (
+              
+              <Form.Group controlId="orderStatus">
+                
+                <Dropdown onSelect={(eventKey) => handleFilterStatus(eventKey)}>
+                  <Dropdown.Toggle variant="#10060" id="orderStatusDropdown">
+                    <b>Статус</b>
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item eventKey="">Все</Dropdown.Item>
+                    <Dropdown.Item eventKey="в работе">В работе</Dropdown.Item>
+                    <Dropdown.Item eventKey="завершён">Завершён</Dropdown.Item>
+                    <Dropdown.Item eventKey="отменён">Отменён</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </Form.Group>
+            
+            ):( <th>Статус заказа</th> ) }
             <th>Грузы в заказе</th>
             <th>Менеджер</th>
             <th>Cформировано</th>
@@ -133,8 +165,8 @@ const OrdersList: FC<OrdersListProps> = ({ setPage }) => {
                     </td>
                     <td>{order.moderator_email ?? "-"}</td>
                     <td>{formatDate(order.date_create) ?? "-"}</td>
-                    {(is_moderator && order.order_status === 'в работе') ? (<td>
-                      <div className="buttons-wrapper">
+                    {(is_moderator && order.order_status === 'в работе') ? (<td className="buttons-wrapper">
+                     
                          <button
                            className="del-from-order-button"
                            onClick={() => handleCancelOrder(order.pk)}>
@@ -146,7 +178,7 @@ const OrdersList: FC<OrdersListProps> = ({ setPage }) => {
                            onClick={() => handleApproveOrder(order.pk)}>
                            Одобрить
                          </button>
-                       </div></td>) : (<td></td>)}
+                       </td>) : (<td></td>)}
                   </tr>
                 );
               }

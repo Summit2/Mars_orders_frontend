@@ -7,8 +7,8 @@
 .buttons-wrapper button {
   flex-grow: 1;
   flex-shrink: 1;
-  min-width: 0; /* Allow buttons to shrink beyond their initial width */
-  max-width: 150px;
+  min-width: 150; /* Allow buttons to shrink beyond their initial width */
+  max-width: 200px;
 }
 .send-button,
 .del-button {
