@@ -26,27 +26,28 @@ const CItem: FC<CargoItemProps> = ({cargo, onClick, isServer, reloadPage, is_dra
 
 
     }
-    const deleteClickHandler = () => {
-        DeleteData()
+    
+    // const deleteClickHandler = () => {
+    //     DeleteData()
             
-            .catch(error => {
-                alert(`Cannot delete cargo : ${cargo.pk}: ${error}`)
-            });
-    }
+    //         .catch(error => {
+    //             alert(`Cannot delete cargo : ${cargo.pk}: ${error}`)
+    //         });
+    // }
 
-    const DeleteData = async () => {
-        const response = await fetch('http://localhost:8000/cargo/' + `${cargo.pk}/`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        if (response.status === 200) {
-            reloadPage()
-            return
-        }
-        throw new Error(`status code = ${response.status}`);
-    }
+    // const DeleteData = async () => {
+    //     const response = await fetch('http://localhost:8000/cargo/' + `${cargo.pk}/`, {
+    //         method: 'DELETE',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //     });
+    //     if (response.status === 200) {
+    //         reloadPage()
+    //         return
+    //     }
+    //     throw new Error(`status code = ${response.status}`);
+    // }
 
 
 

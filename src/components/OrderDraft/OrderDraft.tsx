@@ -29,13 +29,13 @@ const OrderDraft: FC<OrdersListProps> = () => {
     </div>)
  }
 
-console.log(order_draft_data)
+// console.log(order_draft_data)
 
  
 useEffect(() => {
     dispatch(fetchDraftOrder(id_order_draft));
 
-    console.log("useEffect in OrderDraft")
+    // console.log("useEffect in OrderDraft")
     
 }, []);
 
@@ -54,7 +54,7 @@ const handleDeleteOrder =  () => {
 }
 
  const handleDeleteFromOrder = (id_cargo:number ) => {
-    console.log("handleDeleteFromOrder start")
+    // console.log("handleDeleteFromOrder start")
     dispatch(DeleteCargoFromOrder(id_cargo, id_order_draft));
     // dispatch(fetchDraftOrder(id_order_draft));
     // console.log("handleDeleteFromOrder finish")

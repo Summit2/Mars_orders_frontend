@@ -99,6 +99,8 @@ export const addCargoIntoOrder = (cargoId: number) => async (dispatch: AppDispat
         setTimeout(() => {
             dispatch(cargoSlice.actions.cargoAddedIntoOrder(['', '']));
         }, 6000);
+
+        dispatch(fetchCargo())
     } catch (e) {
         dispatch(cargoSlice.actions.all_cargoFetchedError(`${e}`))
     }
@@ -154,10 +156,7 @@ export const DeleteCargoFromOrder = (cargoId: number, id_draft : number) => asyn
         console.log('orderdraft after deleted cargo', response)
 
         dispatch(fetchDraftOrder(id_draft))
-        // dispatch(fetchDraftOrder(id_order_draft));
-        // setTimeout(() => {
-        //     dispatch(cargoSlice.actions.cargoAddedIntoOrder(['', '']));
-        // }, 6000);
+
     } catch (e) {
         // dispatch(cargoSlice.actions.all_cargoFetchedError(`${e}`))
     }
