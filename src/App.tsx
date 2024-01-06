@@ -13,7 +13,7 @@ function App() {
   const homePage = { name: 'Home', to: 'cargo' };
   const cargoPage = { name: 'Грузы', to: 'cargo' };
   const ordersPage = { name: 'Заказы', to: 'orders' };
-  const orderDraftPage = { name: 'Оформление заказа', to: 'order' };
+  const orderDraftPage = { name: 'Заказ', to: 'order' };
   const [searchValue, setSearchValue] = useState('');
   const [pages, setPage] = useState<IBreadCrumb[]>([homePage, cargoPage]);
   const addPage = (newPage: IBreadCrumb[]) => {
