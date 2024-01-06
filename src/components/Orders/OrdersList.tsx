@@ -11,19 +11,23 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux.ts';
 import { fetchOrders} from '../../store/reducers/Actions.tsx';
 
 interface OrdersListProps {
-  // setPage: () => void
+  setPage: () => void
 }
 
-const OrdersList: FC<OrdersListProps> = ({}) => {
+const OrdersList: FC<OrdersListProps> = ({setPage}) => {
   const dispatch = useAppDispatch();
   const { orders, isLoading } = useAppSelector((state) => state.orderReducer);
   const { isAuth } = useAppSelector((state) => state.userReducer);
   const navigate = useNavigate();
 
-//   console.log('in orders list', orders?.orders);
+  if (isAuth == false){
+    return (
+      <div>Error</div>
+    )
+  }
 
   useEffect(() => {
-    // setPage()
+    setPage();
     dispatch(fetchOrders());
 
   }, []);
@@ -34,7 +38,7 @@ const OrdersList: FC<OrdersListProps> = ({}) => {
     <div>
       <h2>Список заказов</h2>
       {isLoading && <p>Loading...</p>}
-      {isAuth ? (
+      
         <table className="table table-bordered table-striped">
           <thead>
             <tr>
@@ -57,7 +61,7 @@ const OrdersList: FC<OrdersListProps> = ({}) => {
                       <td>{order.order_status}</td>
                       <td>Подробности</td>
                       <td>{order.moderator_email ?? "-"}</td>
-                      <td>{convertInputFormatToServerDate(order.date_accept) ?? "-"}</td>
+                      <td>{formatDate(order.date_create) ?? "-"}</td>
                     </tr>
                   );
                 }
@@ -65,23 +69,18 @@ const OrdersList: FC<OrdersListProps> = ({}) => {
               })()}
           </tbody>
         </table>
-      ) : (
-        <div>Error</div>
-      )}
+      
     </div>
   );
 };
 
 export default OrdersList;
-function convertInputFormatToServerDate(dateString: string): string {
-    const dateRegex = /^4-2-2T2:2:2Z2:2/;
-    
-    if (dateRegex.test(dateString)) {
-        return dateString;
-    } else {
-        const date = new Date(dateString);
-        const isoDate = date.toISOString().split('T')[0];
-        
-        return isoDate;
-    }
+
+function formatDate(jsonDate) {
+  const dateObject = new Date(jsonDate);
+  const day = dateObject.getDate().toString().padStart(2, '0');
+  const month = (dateObject.getMonth() + 1).toString().padStart(2, '0');
+  const year = dateObject.getFullYear();
+
+  return `${day}.${month}.${year}`;
 }

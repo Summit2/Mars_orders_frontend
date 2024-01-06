@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 import { FC, useEffect } from 'react';
 // import { CargoItem, mock_data } from '../../models/data.js';
 // import List from "../List.js";
@@ -12,11 +12,12 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux.ts';
 import { DeleteCargoFromOrder, deleteOrderById, fetchDraftOrder, makeOrder} from '../../store/reducers/Actions.tsx';
 import './buttonStyles.css';
 
-interface OrdersListProps {
-  // setPage: () => void
+interface OrderProps {
+  setPage: () => void
+  id_order?: number
 }
 
-const OrderDraft: FC<OrdersListProps> = () => {
+const OrderDraft: FC<OrderProps> = ({setPage,id_order}) => {
   const dispatch = useAppDispatch();
   const { id_order_draft, order_draft_data, isLoading} = useAppSelector((state) => state.orderReducer);
   const { isAuth } = useAppSelector((state) => state.userReducer);
@@ -33,6 +34,7 @@ const OrderDraft: FC<OrdersListProps> = () => {
 
  
 useEffect(() => {
+  setPage();
     dispatch(fetchDraftOrder(id_order_draft));
 
     // console.log("useEffect in OrderDraft")
@@ -59,53 +61,69 @@ const handleDeleteOrder =  () => {
     // dispatch(fetchDraftOrder(id_order_draft));
     // console.log("handleDeleteFromOrder finish")
  }
-  return (
+ return (
+  <div>
     <div>
-      <div>
-        <h3>Оформление заказа</h3>
-      </div>
-  
-      <div className="bottom">
-        <table className="table table-bordered table-striped">
-          <thead>
-            <tr>
-            <th></th>
-              <th>Название</th>
-              <th></th> {/* Add more columns as needed */}
-              
-              {/* Add more columns as needed */}
-            </tr>
-          </thead>
-          <tbody>
-            {order_draft_data?.Cargo_in_Order.map((cargo) => (
-              <tr key={cargo.pk}>
-                <td>{cargo.pk}</td>
-                <td>{cargo.title}</td>
-                
-                <td>
-                <div className="buttons-wrapper">
-                    <button className="del-from-order-button" onClick={() => handleDeleteFromOrder(cargo.pk)}>Убрать</button>
-                    </div>
-                    </td>
-            
-              </tr>
-            ))}
-            
-        
-          </tbody>
-        </table>
-      </div>
-  
-      <div className="buttons-wrapper">
-        <button className="send-button" onClick={handleMakeOrder}>
-          Отправить
-        </button>
-        <button className="del-button" onClick={handleDeleteOrder}>
-          Удалить
-        </button>
-      </div>
+      <h3>Оформление заказа</h3>
     </div>
-  );
+
+    <div className="bottom">
+      <table className="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Название</th>
+            <th></th>
+            {/* Add more columns as needed */}
+          </tr>
+        </thead>
+        <tbody>
+          {order_draft_data &&
+            order_draft_data.Cargo_in_Order &&
+            order_draft_data.Cargo_in_Order.length > 0 &&
+            (() => {
+              const rows = [];
+              const cargoInOrder = order_draft_data.Cargo_in_Order;
+
+              for (let i = 0; i < cargoInOrder.length; i++) {
+                const cargo = cargoInOrder[i];
+
+                rows.push(
+                  <tr key={cargo.pk}>
+                    <td>{i+1}</td>
+                    <td><Link to={`/cargo/${cargo.pk}`}>{cargo.title}</Link></td>
+                    
+                    <td>
+                      <div className="buttons-wrapper">
+                        <button
+                          className="del-from-order-button"
+                          onClick={() => handleDeleteFromOrder(cargo.pk)}
+                        >
+                          Убрать
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              }
+
+              return rows;
+            })()}
+        </tbody>
+      </table>
+    </div>
+
+    <div className="buttons-wrapper">
+      <button className="send-button" onClick={handleMakeOrder}>
+        Отправить
+      </button>
+      <button className="del-button" onClick={handleDeleteOrder}>
+        Удалить
+      </button>
+    </div>
+  </div>
+);
+
   
 };
 

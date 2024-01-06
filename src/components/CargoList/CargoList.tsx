@@ -38,7 +38,7 @@ const CargoList: FC<CargoListProps> = ({ setPage, searchValue, resetSearchValue 
                     // <div className='button_empty'>
                     <button
                         className="cart-button"  
-                        onClick={() => navigate(`/orderDraft`)}>  
+                        onClick={() => navigate(`/order`)}>  
                     </button>
                     // </div>
                     ) : (
