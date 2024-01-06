@@ -1,4 +1,4 @@
-import { useNavigate,Link } from 'react-router-dom';
+import { useNavigate,Link , useParams} from 'react-router-dom';
 import { FC, useEffect } from 'react';
 // import { CargoItem, mock_data } from '../../models/data.js';
 // import List from "../List.js";
@@ -14,16 +14,22 @@ import './buttonStyles.css';
 
 interface OrderProps {
   setPage: () => void
-  id_order?: number
+
 }
 
-const OrderDraft: FC<OrderProps> = ({setPage,id_order}) => {
+const OrderDraft: FC<OrderProps> = ({setPage}) => {
+  const { id } = useParams();
+  const id_order = parseInt( id, 10)
   const dispatch = useAppDispatch();
   const { id_order_draft, order_draft_data, isLoading} = useAppSelector((state) => state.orderReducer);
   const { isAuth } = useAppSelector((state) => state.userReducer);
   const navigate = useNavigate();
 
- if (isAuth==false || isAuth==undefined || id_order_draft==null)//|| order_draft_data == null ||order_draft_data == undefined)
+
+
+
+
+ if (isAuth==false || isAuth==undefined || (id_order_draft==null && id_order==id_order_draft))//|| order_draft_data == null ||order_draft_data == undefined)
  {
     // alert('empty')
     return ( <div>Пусто
@@ -35,7 +41,7 @@ const OrderDraft: FC<OrderProps> = ({setPage,id_order}) => {
  
 useEffect(() => {
   setPage();
-    dispatch(fetchDraftOrder(id_order_draft));
+    dispatch(fetchDraftOrder(id_order));
 
     // console.log("useEffect in OrderDraft")
     
@@ -73,7 +79,7 @@ const handleDeleteOrder =  () => {
           <tr>
             <th></th>
             <th>Название</th>
-            <th></th>
+            {id_order==id_order_draft && ( <th></th> )}
             {/* Add more columns as needed */}
           </tr>
         </thead>
@@ -92,17 +98,20 @@ const handleDeleteOrder =  () => {
                   <tr key={cargo.pk}>
                     <td>{i+1}</td>
                     <td><Link to={`/cargo/${cargo.pk}`}>{cargo.title}</Link></td>
-                    
-                    <td>
-                      <div className="buttons-wrapper">
-                        <button
-                          className="del-from-order-button"
-                          onClick={() => handleDeleteFromOrder(cargo.pk)}
-                        >
-                          Убрать
-                        </button>
-                      </div>
-                    </td>
+                    {id_order==id_order_draft && (
+                       <td>
+                       <div className="buttons-wrapper">
+                         <button
+                           className="del-from-order-button"
+                           onClick={() => handleDeleteFromOrder(cargo.pk)}
+                         >
+                           Убрать
+                         </button>
+                       </div>
+                     </td>
+
+                    )}
+                   
                   </tr>
                 );
               }
@@ -112,7 +121,7 @@ const handleDeleteOrder =  () => {
         </tbody>
       </table>
     </div>
-
+    {id_order==id_order_draft && (
     <div className="buttons-wrapper">
       <button className="send-button" onClick={handleMakeOrder}>
         Отправить
@@ -121,6 +130,7 @@ const handleDeleteOrder =  () => {
         Удалить
       </button>
     </div>
+    )}
   </div>
 );
 

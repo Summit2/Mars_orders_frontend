@@ -73,7 +73,7 @@ function App() {
             }
           />
           <Route
-            path="/order"
+            path="/order/:id" 
             element={
               <OrderDraft
                 setPage={() => addPage([homePage, ordersPage, orderDraftPage])}

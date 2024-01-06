@@ -26,7 +26,7 @@ const CargoList: FC<CargoListProps> = ({ setPage, searchValue, resetSearchValue 
     useEffect(() => {
         setPage();
         dispatch(fetchCargo(searchValue));
-    }, [searchValue]);
+    }, [searchValue, id_order_draft]);
 
     return (
         <>
@@ -38,9 +38,9 @@ const CargoList: FC<CargoListProps> = ({ setPage, searchValue, resetSearchValue 
                     // <div className='button_empty'>
                     <button
                         className="cart-button"  
-                        onClick={() => navigate(`/order`)}>  
+                        onClick={() => navigate(`/order/${id_order_draft}`)}>  
                     </button>
-                    // </div>
+
                     ) : (
                         
                     <button className="add-button_not_auth"  ></button> 

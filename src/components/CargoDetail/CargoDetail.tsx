@@ -13,10 +13,9 @@ interface CargoDetailProps {
 
 const CargoDetail: FC<CargoDetailProps> = ({setPage}) => {
     const params = useParams();
-    // const [cargo, setCargo] = useState<CargoItem | null>(null);
-    // const navigate = useNavigate();
+
     const dispatch = useAppDispatch()
-    const {cargo, isLoading, error} = useAppSelector(state => state.cargoReducer)
+    const {cargo} = useAppSelector(state => state.cargoReducer)
     console.log('cargo in get cargo', cargo)
     const navigate = useNavigate();
 

@@ -136,7 +136,7 @@ export const DeleteCargoFromOrder = (cargoId: number, id_draft : number) => asyn
     const accessToken = Cookies.get('session_key');
     const config = {
         method: "delete",
-        url: `api/update_order/${cargoId}/delete/`,
+        url: `/api/update_order/${cargoId}/delete/`,
         headers: {
             Cookies: `session_key=${accessToken}`,
         },
@@ -167,7 +167,7 @@ export const makeOrder= (IdOrder : number) => async (dispatch: AppDispatch) => {
 
     const config = {
         method: "put",
-        url: `api/update_status/${IdOrder}/set_user_status/`,
+        url: `/api/update_status/${IdOrder}/set_user_status/`,
         headers: {
             Cookies: `session_key=${accessToken}`,
         },
