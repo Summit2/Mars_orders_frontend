@@ -1,9 +1,15 @@
 .buttons-wrapper {
   display: flex;
   justify-content: center; 
-  gap: 50px;
+  gap: 10px;
+ 
 }
-
+.buttons-wrapper button {
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 0; /* Allow buttons to shrink beyond their initial width */
+  max-width: 150px;
+}
 .send-button,
 .del-button {
   background-color: #4caf50; 

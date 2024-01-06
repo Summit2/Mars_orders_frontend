@@ -3,10 +3,11 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 interface UserState {
     user: IUser | null
-    isLoading: boolean
+    isLoading: boolean 
     error: string
     success: string
     isAuth: boolean
+    is_moderator: boolean | undefined | null
 }
 
 const initialState: UserState = {
@@ -14,7 +15,8 @@ const initialState: UserState = {
     isLoading: false,
     isAuth: false,
     error: '',
-    success: ''
+    success: '',
+    is_moderator: false
 }
 
 export const userSlice = createSlice({
@@ -37,6 +39,11 @@ export const userSlice = createSlice({
             state.isLoading = false
             state.error = action.payload
             state.success = ''
+        },
+        setIsModer(state, action: PayloadAction<boolean>){
+            if (action.payload===true) {
+            state.is_moderator = true
+            }
         },
         resetStatuses(state) {
             state.isLoading = false

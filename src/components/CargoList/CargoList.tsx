@@ -5,7 +5,7 @@ import List from "../List.js";
 import CItem from "../CargoItem/CargoItem.tsx";
 import './CargoList.css';
 import '../my_style.css';
-
+import Cookies from 'js-cookie';
 //redux imports
 import { useAppDispatch, useAppSelector } from "../../hooks/redux.ts";
 import { fetchCargo } from "../../store/reducers/Actions.tsx";
@@ -20,8 +20,9 @@ const CargoList: FC<CargoListProps> = ({ setPage, searchValue, resetSearchValue 
     const dispatch = useAppDispatch();
     const { all_cargo, isLoading} = useAppSelector(state => state.cargoReducer);
     const { id_order_draft } = useAppSelector((state) => state.orderReducer);
-    const { isAuth } = useAppSelector(state => state.userReducer);
+    // const { isAuth , is_moderator} = useAppSelector(state => state.userReducer);
     const navigate = useNavigate();
+
 
     useEffect(() => {
         setPage();

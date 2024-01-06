@@ -21,7 +21,10 @@ const base_url = '/api'// 'http://localhost:8000'
 
 export const fetchCargo = (searchValue?: string) => async (dispatch: AppDispatch) => {
     const accessToken = Cookies.get('session_key')
-    console.log('session key' ,accessToken)
+    const isModer = Cookies.get('is_moderator')
+    if (isModer=='true') {
+        dispatch(userSlice.actions.setIsModer(true))
+    }
     dispatch(userSlice.actions.setAuthStatus(accessToken != null && accessToken != ""));
 
     try {
@@ -33,7 +36,7 @@ export const fetchCargo = (searchValue?: string) => async (dispatch: AppDispatch
             },
            
         });
-        console.log('draftId: ',response.data.id_order_draft)
+        // console.log('draftId: ',response.data.id_order_draft)
         dispatch(cargoSlice.actions.all_cargoFetched(response.data.data))
         dispatch(orderSlice.actions.OrderDraftIdFetched(response.data.id_order_draft))
     } catch (e) {
@@ -153,7 +156,7 @@ export const DeleteCargoFromOrder = (cargoId: number, id_draft : number) => asyn
         // dispatch(orderSlice.actions.ordersLoaded())
 
         // dispatch(fetchDraftOrder(id_order_draft));
-        console.log('orderdraft after deleted cargo', response)
+        // console.log('orderdraft after deleted cargo', response)
 
         dispatch(fetchDraftOrder(id_draft))
 
@@ -164,7 +167,10 @@ export const DeleteCargoFromOrder = (cargoId: number, id_draft : number) => asyn
 
 export const makeOrder= (IdOrder : number) => async (dispatch: AppDispatch) => {
     const accessToken = Cookies.get('session_key');
-
+    const isModer = Cookies.get('is_moderator')
+        if (isModer=='true') {
+            dispatch(userSlice.actions.setIsModer(true))
+        }
     const config = {
         method: "put",
         url: `/api/update_status/${IdOrder}/set_user_status/`,
@@ -194,10 +200,79 @@ export const makeOrder= (IdOrder : number) => async (dispatch: AppDispatch) => {
         dispatch(orderSlice.actions.ordersDeleteError(`${e}`))
     }
 }
+export const ApproveOrder = (IdOrder : number) => async (dispatch: AppDispatch) => {
+    const accessToken = Cookies.get('session_key');
+    const isModer = Cookies.get('is_moderator')
+        if (isModer=='true') {
+            dispatch(userSlice.actions.setIsModer(true))
+        }
+    const config = {
+        method: "put",
+        url: `/api/update_status/${IdOrder}/set_moderator_status/`,
+        headers: {
+            Cookies: `session_key=${accessToken}`,
+        },
+        data : {
+            "status" : 'завершён'
+        }
+        
+    }
+    try {
+        dispatch(orderSlice.actions.ordersFetching())
+        const response = await axios(config);
+        const errorText = response.data.description ?? ""
+        const successText = errorText || `Заявка завершена`
+        dispatch(orderSlice.actions.ordersUpdated([errorText, successText]));
+        if (successText != "") {
+            dispatch(fetchOrders())
+        }
+        
+    } catch (e) {
+        dispatch(orderSlice.actions.ordersDeleteError(`${e}`))
+    }
+}
+export const CancelOrder = (IdOrder : number) => async (dispatch: AppDispatch) => {
+    const accessToken = Cookies.get('session_key');
+    const isModer = Cookies.get('is_moderator')
+        if (isModer=='true') {
+            dispatch(userSlice.actions.setIsModer(true))
+        }
+    const config = {
+        method: "put",
+        url: `/api/update_status/${IdOrder}/set_moderator_status/`,
+        headers: {
+            Cookies: `session_key=${accessToken}`,
+        },
+        data : {
+            "status" : 'отменён'
+        }
+        
+    }
+    try {
+        dispatch(orderSlice.actions.ordersFetching())
+        const response = await axios(config);
+        const errorText = response.data.description ?? ""
+        const successText = errorText || `Заявка отменена`
+        dispatch(orderSlice.actions.ordersUpdated([errorText, successText]));
+        if (successText != "") {
+            dispatch(fetchOrders())
+        }
+        
+        
+    } catch (e) {
+        dispatch(orderSlice.actions.ordersDeleteError(`${e}`))
+    }
+}
 
 export const fetchOrders = () => async (dispatch: AppDispatch) => {
     // console.log('fetchOrders')
     const accessToken = Cookies.get('session_key');
+
+    const isModer = Cookies.get('is_moderator')
+        if (isModer=='true') {
+            dispatch(userSlice.actions.setIsModer(true))
+        }
+    // console.log(Cookies.get('is_moderator'))
     dispatch(userSlice.actions.setAuthStatus(accessToken != null && accessToken != ""));
     try {
         dispatch(orderSlice.actions.ordersFetching())
@@ -232,7 +307,7 @@ export const fetchDraftOrder = (id_order_draft: number ) => async (dispatch: App
         });
         
         
-        console.log(response.data)
+        // console.log(response.data)
         
         dispatch(orderSlice.actions.DataOrderDraftFetched(response.data))
         
@@ -347,7 +422,8 @@ export const logoutSession = () => async (dispatch: AppDispatch) => {
         const errorText = response.data.login == '' ? 'Ошибка регистрации' : ''
         const successText = errorText || "Выход из аккаунта"
         dispatch(userSlice.actions.setStatuses([errorText, successText]))
-
+        Cookies.set('is_moderator', `false`);
+        dispatch(userSlice.actions.setIsModer(false));
         if (errorText == '') {
             Cookies.remove('session_key');
             dispatch(userSlice.actions.setAuthStatus(false))
@@ -374,17 +450,31 @@ export const loginSession = (login: string, password: string) => async (dispatch
             "passwd": password,
         }
     };
-    // console.log(config)
+    
     try {
         dispatch(userSlice.actions.startProcess())
         const response = await axios<IAuthResponse>(config);
+
+        
+
         const errorText = response.data.description ?? ""
         const successText = errorText || "Авторизация прошла успешна"
         dispatch(userSlice.actions.setStatuses([errorText, successText]));
         const session_key = response.data.access_token
+        // console.log('moderator?', response.data.access_token)
+        // console.log(session_key)
         if (session_key) {
+            
+            // console.log(Cookies.get("session_key"))
             Cookies.set('session_key', session_key);
             dispatch(userSlice.actions.setAuthStatus(true));
+            
+        }
+        // console.log(response.data.is_moderator)
+        Cookies.set('is_moderator', `${response.data.is_moderator}`);
+        const isModer = Cookies.get('is_moderator')
+        if (isModer=='true') {
+            dispatch(userSlice.actions.setIsModer(true))
         }
         setTimeout(() => {
             dispatch(userSlice.actions.resetStatuses());
@@ -437,13 +527,3 @@ export const convertServerDateToInputFormat = (serverDate: string) => {
     return `${year}-${month}-${day}`;
 };
 
-function convertInputFormatToServerDate(dateString: string): string {
-    const dateRegex = /^4-2-2T2:2:2Z2:2/;
-    if (dateRegex.test(dateString)) {
-        return dateString;
-    } else {
-        const date = new Date(dateString);
-        const isoDate = date.toISOString();
-        return isoDate;
-    }
-}
