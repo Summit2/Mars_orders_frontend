@@ -80,6 +80,48 @@ export const fetchExactCargo = (
     }
 }
 
+export const CreateCargo = (
+    cargoTitle: string,
+    cargoWeight: number,
+    cargoDescription: string | null,
+    cargoImage: string | null,) => async (dispatch: AppDispatch) => {
+
+    const accessToken = Cookies.get('session_key')
+    const isModer = Cookies.get('is_moderator')
+    if (isModer=='true') {
+        dispatch(userSlice.actions.setIsModer(true))
+    }
+    dispatch(userSlice.actions.setAuthStatus(accessToken != null && accessToken != ""));
+
+    const config = {
+        method: "put",
+        url: `/api/cargo/new/`,
+        headers: {
+            Cookies: `session_key=${accessToken}`,
+        },
+        data: {
+            'title' : cargoTitle,
+            'weight' : cargoWeight,
+            'description' : cargoDescription,
+            'is_deleted' : false,
+            "image_binary" : cargoImage
+        }
+    }
+    try {
+        dispatch(cargoSlice.actions.all_cargoFetching())
+        const response = await axios(config);
+        const errorText = response.data.description ?? ""
+        const successText = errorText || `Заявка создана`
+        dispatch(cargoSlice.actions.all_cargoFetched())
+        if (successText != "") {
+            dispatch(fetchCargo())
+        }
+    } catch (e) {
+        dispatch(cargoSlice.actions.all_cargoFetchedError(`Ошибка: ${e}`))
+       
+    }
+}
+
 export const DeleteCargo = (idCargo :number)=> async (dispatch: AppDispatch) => {
     const accessToken = Cookies.get('session_key')
     const isModer = Cookies.get('is_moderator')

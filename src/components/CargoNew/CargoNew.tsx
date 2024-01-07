@@ -1,64 +1,63 @@
-import React from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { FC, useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.ts';
 import { fetchCargo } from '../../store/reducers/Actions.tsx';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import { registerLocale } from 'react-datepicker';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { format } from 'date-fns';
-import ru from 'date-fns/locale/ru';
+import { default_image } from '../../models/data.ts';
 
-registerLocale('ru', ru);
 
 interface CargoTableProps {
   setPage: () => void;
 }
 
-const CargoNew: FC<CargoTableProps> = ({ setPage }) => {
+const CargoNew: React.FC<CargoTableProps> = ({ setPage }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { isAuth } = useAppSelector((state) => state.userReducer);
 
   const [cargoName, setCargoName] = useState('');
   const [cargoDescription, setCargoDescription] = useState('');
-  const [cargoImage, setCargoImage] = useState<File | null>(null);
-  const [cargoWeight, setCargoWeight] = useState<number>(0);
+  const [cargoImage, setCargoImage] = useState<string>('');
+  const [cargoWeight, setCargoWeight] = useState<number | null>(null);
 
+  // State variables for field validation
+  const [isNameValid, setIsNameValid] = useState<boolean>(true);
+  const [isWeightValid, setIsWeightValid] = useState<boolean>(true);
 
   useEffect(() => {
     setPage();
     dispatch(fetchCargo());
   }, []);
+
   const handleCreateCargo = () => {
+ 
+    setIsNameValid(!!cargoName);
+    setIsWeightValid(!!cargoWeight);
 
     if (!cargoName || !cargoWeight ) {
-                alert('Обязательные поля не заполнены!');
-        return;
-      }
-
-      
-    const fileInput = document.getElementById('cargoImage') as HTMLInputElement;
-  
-    if (fileInput?.files?.length) {
-      const file = fileInput.files[0];
-      const reader = new FileReader();
-  
-      reader.onload = () => {
-        const encodedImage = reader.result as string;
-        // Use encodedImage as needed
-        console.log('Encoded Image:', encodedImage);
-      };
-
+      console.log(cargoName, cargoWeight)
+      return;
     }
-  
-    // Add logic to send cargo data to the server or perform other actions
+
+    const fileInput = document.getElementById('cargoImage') as HTMLInputElement;
+    const file = fileInput.files?.[0];
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const encodedImage = reader.result as string;
+      setCargoImage(encodedImage); // Set the state with the encoded image
+    };
+
+    // reader.readAsDataURL(file);
+
     console.log('Creating cargo with the following details:');
     console.log('Cargo Name:', cargoName);
-    console.log('Cargo Description:', cargoWeight);
+    console.log('Cargo Description:', cargoImage);
+   
+    dispatch(CreateCargo(cargoName,cargoWeight, cargoDescription!='' ? cargoDescription : '-', cargoImage!='' ? cargoImage : default_image))
   };
-  
+
   return (
     <>
       <Container>
@@ -77,19 +76,23 @@ const CargoNew: FC<CargoTableProps> = ({ setPage }) => {
                     placeholder="Введите название груза"
                     value={cargoName}
                     onChange={(e) => setCargoName(e.target.value)}
+                    isInvalid={!isNameValid}
                     required
                   />
+                  <Form.Control.Feedback type="invalid">Название груза обязательно</Form.Control.Feedback>
                 </Form.Group>
 
-                 <Form.Group controlId="cargoWeight" className="mt-3">
-                <Form.Label className="font-weight-bold text-left">Вес груза</Form.Label>
-                <Form.Control
+                <Form.Group controlId="cargoWeight" className="mt-3">
+                  <Form.Label className="font-weight-bold text-left">Вес груза:</Form.Label>
+                  <Form.Control
                     type="number"
                     placeholder="Введите вес груза"
-                    value={cargoWeight} // Use cargoWeight instead of cargoName
-                    onChange={(e) => setCargoWeight(Number(e.target.value))} // Parse the value to a number
+                    value={cargoWeight ?? ''}
+                    onChange={(e) => setCargoWeight(Number(e.target.value) || null)}
+                    isInvalid={!isWeightValid}
                     required
-                />
+                  />
+                  <Form.Control.Feedback type="invalid">Вес груза обязателен</Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group controlId="cargoDescription" className="mt-3">
@@ -100,10 +103,9 @@ const CargoNew: FC<CargoTableProps> = ({ setPage }) => {
                     placeholder="Введите описание груза"
                     value={cargoDescription}
                     onChange={(e) => setCargoDescription(e.target.value)}
-                    
+                    required
                   />
                 </Form.Group>
-                
 
                 <Form.Group controlId="cargoImage" className="mt-3">
                   <Form.Label className="font-weight-bold text-left">Изображение груза:</Form.Label>
