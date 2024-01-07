@@ -1,6 +1,7 @@
 import { useNavigate, Link } from 'react-router-dom';
 import { FC, useEffect ,useState} from 'react';
 import { CargoItem, mock_data } from '../../models/data.js';
+import { orderSlice } from '../../store/reducers/OrderSlice.tsx';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.ts';
 import { ApproveOrder, CancelOrder, fetchOrders } from '../../store/reducers/Actions.tsx';
 import DatePicker from 'react-datepicker';
@@ -9,6 +10,7 @@ import { registerLocale} from 'react-datepicker';
 import { format } from 'date-fns';
 import ru from 'date-fns/locale/ru';
 import { Form, Row, Col, Button, Dropdown  } from 'react-bootstrap';
+import OrderSlice from '../../store/reducers/OrderSlice.tsx';
 
 
 registerLocale('ru', ru);
@@ -26,7 +28,7 @@ const OrdersList: FC<OrdersListProps> = ({ setPage }) => {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>('');
-
+  const [filterLogin, setFilterLogin] = useState<string>('');
   if (isAuth == false) {
     return (
       <div>Error</div>
@@ -69,6 +71,25 @@ const OrdersList: FC<OrdersListProps> = ({ setPage }) => {
     dispatch(fetchOrders(new_status));
   }
 
+
+
+  //login filter
+  const handleFilterLogin = () => {
+    const filteredOrders = [];
+    console.log(orders)
+  for (let i = 0; i < orders.orders.length; i++) {
+    if (orders.orders[i].user_email.includes(filterLogin)) {
+
+      filteredOrders.push(orders.orders[i]);
+    }
+  }
+
+  dispatch(orderSlice.actions.ordersFetched({"orders" : filteredOrders}))
+  }
+  const handleClearFilterLogin= () => {
+    setFilterLogin('')
+    dispatch(fetchOrders(''))
+  }
   return (
     <div>
       <h2>Список заказов</h2>
@@ -84,6 +105,7 @@ const OrdersList: FC<OrdersListProps> = ({ setPage }) => {
               selected={startDate}
               onChange={(date) => setStartDate(date)}
               selectsStart
+              
               startDate={startDate}
               endDate={endDate}
               locale="ru"
@@ -115,6 +137,21 @@ const OrdersList: FC<OrdersListProps> = ({ setPage }) => {
         Отфильтровать по дате
       </Button>
       <Button className="btn btn-primary" onClick={handleClearFilterDate}>
+        Сбросить фильтр
+      </Button>
+
+      <Form.Group controlId="login">
+    <Form.Label>Логин:</Form.Label>
+    <Form.Control
+      type="text"
+      value={filterLogin ?? ''}
+      onChange={(e) => setFilterLogin(e.target.value)}
+    />
+  </Form.Group>
+  <Button className="btn btn-primary" onClick={handleFilterLogin}>
+    Отфильтровать по логину
+  </Button>
+  <Button className="btn btn-primary" onClick={handleClearFilterLogin}>
         Сбросить фильтр
       </Button>
     </div>

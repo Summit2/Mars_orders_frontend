@@ -2,16 +2,9 @@ import { useNavigate, Link } from 'react-router-dom';
 import { FC, useEffect ,useState} from 'react';
 import { CargoItem, mock_data } from '../../models/data.js';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.ts';
-import { ApproveOrder, CancelOrder, DeleteCargo, fetchCargo, fetchOrders } from '../../store/reducers/Actions.tsx';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { registerLocale} from 'react-datepicker';
-import { format } from 'date-fns';
-import ru from 'date-fns/locale/ru';
-import { Form, Row, Col, Button, Dropdown  } from 'react-bootstrap';
+import { ApproveOrder, CancelOrder, DeleteCargo, fetchCargo, UpdateCargo } from '../../store/reducers/Actions.tsx';
 import './buttons.css'
 
-registerLocale('ru', ru);
 
 interface CargoTableProps {
   setPage: () => void;
@@ -113,12 +106,3 @@ const CargoTable: FC<CargoTableProps> = ({ setPage }) => {
 };
 
 export default CargoTable;
-
-function formatDate(jsonDate) {
-  const dateObject = new Date(jsonDate);
-  const day = dateObject.getDate().toString().padStart(2, '0');
-  const month = (dateObject.getMonth() + 1).toString().padStart(2, '0');
-  const year = dateObject.getFullYear();
-
-  return `${day}.${month}.${year}`;
-}

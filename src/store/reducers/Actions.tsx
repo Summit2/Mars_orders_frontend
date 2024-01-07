@@ -94,7 +94,7 @@ export const CreateCargo = (
     dispatch(userSlice.actions.setAuthStatus(accessToken != null && accessToken != ""));
 
     const config = {
-        method: "put",
+        method: "post",
         url: `/api/cargo/new/`,
         headers: {
             Cookies: `session_key=${accessToken}`,
@@ -103,7 +103,6 @@ export const CreateCargo = (
             'title' : cargoTitle,
             'weight' : cargoWeight,
             'description' : cargoDescription,
-            'is_deleted' : false,
             "image_binary" : cargoImage
         }
     }
@@ -115,10 +114,11 @@ export const CreateCargo = (
         dispatch(cargoSlice.actions.all_cargoFetched())
         if (successText != "") {
             dispatch(fetchCargo())
+            alert(" Груз создан!")
         }
     } catch (e) {
-        dispatch(cargoSlice.actions.all_cargoFetchedError(`Ошибка: ${e}`))
-       
+        // dispatch(cargoSlice.actions.all_cargoFetchedError(`Ошибка: ${e}`))
+    //    alert("Груз с таким названием уже существует!")
     }
 }
 
@@ -162,7 +162,7 @@ export const UpdateCargo = (idCargo :number)=> async (dispatch: AppDispatch) => 
     dispatch(userSlice.actions.setAuthStatus(accessToken != null && accessToken != ""));
 
     const config = {
-        method: "delete",
+        method: "put",
         url: `/api/cargo/${idCargo}/edit/`,
         headers: {
             Cookies: `session_key=${accessToken}`,

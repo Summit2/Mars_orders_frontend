@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux.ts';
 import { fetchCargo } from '../../store/reducers/Actions.tsx';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { default_image } from '../../models/data.ts';
-
+import { CreateCargo } from '../../store/reducers/Actions.tsx';
 
 interface CargoTableProps {
   setPage: () => void;
@@ -17,7 +17,7 @@ const CargoNew: React.FC<CargoTableProps> = ({ setPage }) => {
 
   const [cargoName, setCargoName] = useState('');
   const [cargoDescription, setCargoDescription] = useState('');
-  const [cargoImage, setCargoImage] = useState<string>('');
+  const [cargoImage, setCargoImage] = useState<File | null >(null);
   const [cargoWeight, setCargoWeight] = useState<number | null>(null);
 
   // State variables for field validation
@@ -39,27 +39,22 @@ const CargoNew: React.FC<CargoTableProps> = ({ setPage }) => {
       return;
     }
 
-    const fileInput = document.getElementById('cargoImage') as HTMLInputElement;
-    const file = fileInput.files?.[0];
+    
 
-    const reader = new FileReader();
 
-    reader.onload = () => {
-      const encodedImage = reader.result as string;
-      setCargoImage(encodedImage); // Set the state with the encoded image
-    };
-
-    // reader.readAsDataURL(file);
-
-    console.log('Creating cargo with the following details:');
-    console.log('Cargo Name:', cargoName);
-    console.log('Cargo Description:', cargoImage);
+    
+    // console.log(cargoImage)
    
-    dispatch(CreateCargo(cargoName,cargoWeight, cargoDescription!='' ? cargoDescription : '-', cargoImage!='' ? cargoImage : default_image))
+    dispatch(CreateCargo(cargoName,cargoWeight, cargoDescription!='' ? cargoDescription : '-',  default_image))  //cargoImage!='' ? cargoImage :
+    // setCargoName('')
+    // setCargoDescription('')
+    // setCargoImage('')
+    // setCargoWeight(null)
   };
 
   return (
     <>
+   
       <Container>
         {isAuth ? (
           <Row className="justify-content-center">
