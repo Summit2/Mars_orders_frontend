@@ -13,13 +13,9 @@ interface CargoItemProps {
     is_draft: boolean
 }
 
-const CItem: FC<CargoItemProps> = ({cargo, onClick, isServer, reloadPage, is_draft}) => {
+const CItem: FC<CargoItemProps> = ({cargo, onClick, isServer, reloadPage}) => {
     const dispatch = useAppDispatch();
-    const {success, isAuth} = useAppSelector(state => state.userReducer)
-    // const { isLoading} = useAppSelector(state => state.cargoReducer);
-
-
-
+    const { isAuth} = useAppSelector(state => state.userReducer)
     const handleAddToOrder = (cargoID : number) => {
         
         dispatch(addCargoIntoOrder(cargoID))
@@ -27,27 +23,6 @@ const CItem: FC<CargoItemProps> = ({cargo, onClick, isServer, reloadPage, is_dra
 
     }
     
-    // const deleteClickHandler = () => {
-    //     DeleteData()
-            
-    //         .catch(error => {
-    //             alert(`Cannot delete cargo : ${cargo.pk}: ${error}`)
-    //         });
-    // }
-
-    // const DeleteData = async () => {
-    //     const response = await fetch('http://localhost:8000/cargo/' + `${cargo.pk}/`, {
-    //         method: 'DELETE',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //     });
-    //     if (response.status === 200) {
-    //         reloadPage()
-    //         return
-    //     }
-    //     throw new Error(`status code = ${response.status}`);
-    // }
 
 
 

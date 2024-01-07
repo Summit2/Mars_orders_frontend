@@ -34,7 +34,6 @@ const OrdersList: FC<OrdersListProps> = ({ setPage }) => {
       <div>Error</div>
     );
   }
-  // console.log(is_moderator)
 
   useEffect(() => {
     setPage();
@@ -95,7 +94,7 @@ const OrdersList: FC<OrdersListProps> = ({ setPage }) => {
       <h2>Список заказов</h2>
       {/* {isLoading && <p>Loading...</p>} */}
 
-
+      {is_moderator &&
       <div>
       <Row>
         <Col md={4}>
@@ -155,7 +154,7 @@ const OrdersList: FC<OrdersListProps> = ({ setPage }) => {
         Сбросить фильтр
       </Button>
     </div>
-      
+}
       <table className="table table-bordered table-striped">
         <thead>
           <tr>

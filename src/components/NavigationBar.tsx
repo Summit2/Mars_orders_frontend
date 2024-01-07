@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import React, {FC} from "react";
-
+import {useParams, useNavigate} from 'react-router-dom'
 import {useAppDispatch, useAppSelector} from "../hooks/redux.ts";
 import {logoutSession} from "../store/reducers/Actions.tsx";
 
@@ -25,6 +25,7 @@ const NavigationBar: FC<NavigationBarProps> = ({handleSearchValue}) => {
     // };
 
     const dispatch = useAppDispatch()
+    const navigate = useNavigate();
     const {isAuth, is_moderator} = useAppSelector(state => state.userReducer)
 
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
@@ -36,6 +37,7 @@ const NavigationBar: FC<NavigationBarProps> = ({handleSearchValue}) => {
 
     const handleLogout = () => {
         dispatch(logoutSession())
+        navigate('/cargo');
     };
 
     return (
