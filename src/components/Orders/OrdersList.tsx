@@ -1,17 +1,16 @@
 import { useNavigate, Link } from 'react-router-dom';
-import { FC, useEffect ,useState} from 'react';
+import { FC, useEffect, useState, useRef } from 'react';
 import { CargoItem, mock_data } from '../../models/data.js';
 import { orderSlice } from '../../store/reducers/OrderSlice.tsx';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.ts';
 import { ApproveOrder, CancelOrder, fetchOrders } from '../../store/reducers/Actions.tsx';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { registerLocale} from 'react-datepicker';
+import { registerLocale } from 'react-datepicker';
 import { format } from 'date-fns';
 import ru from 'date-fns/locale/ru';
-import { Form, Row, Col, Button, Dropdown  } from 'react-bootstrap';
+import { Form, Row, Col, Button, Dropdown } from 'react-bootstrap';
 import OrderSlice from '../../store/reducers/OrderSlice.tsx';
-
 
 registerLocale('ru', ru);
 
@@ -22,22 +21,30 @@ interface OrdersListProps {
 const OrdersList: FC<OrdersListProps> = ({ setPage }) => {
   const dispatch = useAppDispatch();
   const { orders, isLoading } = useAppSelector((state) => state.orderReducer);
-  const { isAuth , is_moderator} = useAppSelector((state) => state.userReducer);
+  const { isAuth, is_moderator } = useAppSelector((state) => state.userReducer);
   const navigate = useNavigate();
 
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>('');
   const [filterLogin, setFilterLogin] = useState<string>('');
-  if (isAuth == false) {
-    return (
-      <div>Error</div>
-    );
-  }
+  const pollingInterval = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     setPage();
     dispatch(fetchOrders(filterStatus));
+
+    // Set up polling every 2 seconds
+    pollingInterval.current = setInterval(() => {
+      dispatch(fetchOrders(filterStatus));
+    }, 2000);
+
+    // Clear polling interval when component unmounts
+    return () => {
+      if (pollingInterval.current) {
+        clearInterval(pollingInterval.current);
+      }
+    };
   }, []);
  
   const handleCancelOrder = (id_order :number) => {
