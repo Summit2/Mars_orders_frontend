@@ -11,6 +11,7 @@ import OrderDraft from "./components/OrderDraft/OrderDraft.tsx";
 import CargoTable from "./components/CargoChange/CargoTable.tsx";
 import CargoNew from "./components/CargoNew/CargoNew.tsx";
 import Menu from './menu.tsx'; 
+import CargoChange from './components/CargoChange/CargoChangePage.tsx';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
   const orderDraftPage = { name: 'Заказ', to: 'order' };
   const cargoTablePage = { name: 'Таблица', to: 'cargoTable' };
   const cargoNewPage = { name: 'Новый груз', to: 'cargoNew' };
+  const cargoChangePage = { name: 'Редактирование груза', to: 'cargoChange' };
   const [searchValue, setSearchValue] = useState('');
   const [pages, setPage] = useState<IBreadCrumb[]>([homePage]);
   const addPage = (newPage: IBreadCrumb[]) => {
@@ -110,6 +112,14 @@ function App() {
                 setPage={() => addPage([homePage,cargoPage, cargoNewPage ])}
               />
             }
+            
+          />
+          <Route
+            path="/cargoChange"
+            element={
+              <CargoChange
+              setPage={() => addPage([homePage,cargoPage, cargoChangePage ])}
+              />}
           />
         </Routes>
       </>

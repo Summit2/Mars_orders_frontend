@@ -1,35 +1,54 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.ts';
-import { fetchCargo } from '../../store/reducers/Actions.tsx';
+import { UpdateCargo, fetchCargo } from '../../store/reducers/Actions.tsx';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import { default_image } from '../../models/data.ts';
-import { CreateCargo } from '../../store/reducers/Actions.tsx';
+
+
 
 interface CargoTableProps {
   setPage: () => void;
+  
 }
 
-const CargoNew: React.FC<CargoTableProps> = ({ setPage }) => {
+const CargoChange: React.FC<CargoTableProps> = ({ setPage}) => {
+    
+ 
+    
+    
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { isAuth } = useAppSelector((state) => state.userReducer);
+  const { all_cargo, CargoToChange } = useAppSelector((state) => state.cargoReducer);
 
-  const [cargoName, setCargoName] = useState('');
-  const [cargoDescription, setCargoDescription] = useState('');
+  if (CargoToChange==null || CargoToChange==undefined)
+  {
+    return <div>Error</div>
+  }
+
+  const [cargoName, setCargoName] = useState<string>(CargoToChange.title);
+  const [cargoDescription, setCargoDescription] = useState<string>(CargoToChange.description);
   const [cargoImage, setCargoImage] = useState<File | null >(null);
-  const [cargoWeight, setCargoWeight] = useState<number | null>(null);
+  const [cargoWeight, setCargoWeight] = useState<number | null>(CargoToChange?.weight);
 
   // State variables for field validation
   const [isNameValid, setIsNameValid] = useState<boolean>(true);
   const [isWeightValid, setIsWeightValid] = useState<boolean>(true);
 
   useEffect(() => {
+
+
+    console.log(CargoToChange)
     setPage();
-    dispatch(fetchCargo());
+    setCargoName(CargoToChange.title)
+    setCargoDescription(CargoToChange.description)
+    setCargoWeight(CargoToChange.weight)
+
   }, []);
 
-  const handleCreateCargo = () => {
+  const handleChangeCargo = () => {
+    
+
     setIsNameValid(!!cargoName);
     setIsWeightValid(!!cargoWeight);
 
@@ -42,13 +61,9 @@ const CargoNew: React.FC<CargoTableProps> = ({ setPage }) => {
     console.log(cargoImage)
     console.log(formData)
 
-    dispatch(CreateCargo(cargoName,cargoWeight, cargoDescription, cargoImage)); 
-
-
-    setCargoName('');
-    setCargoDescription('');
-    setCargoImage(null);
-    setCargoWeight(null);
+    dispatch(UpdateCargo(CargoToChange.pk,cargoName,cargoWeight, cargoDescription, cargoImage)); 
+    alert(" Груз отредактирован")
+    navigate('/cargoTable')
   };
 
   return (
@@ -60,11 +75,11 @@ const CargoNew: React.FC<CargoTableProps> = ({ setPage }) => {
             <Col md={5}>
               <div className="bg-dark p-4 rounded">
                 <h2 className="text-center mb-4" style={{ color: 'white' }}>
-                  Создание груза
+                  Редактирование груза
                 </h2>
 
                 <Form.Group controlId="cargoName">
-                  <Form.Label className="font-weight-bold text-left">Название груза:</Form.Label>
+                  <Form.Label className="font-weight-bold text-left " style={{ color: 'white' }}>Название груза:</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Введите название груза"
@@ -77,7 +92,7 @@ const CargoNew: React.FC<CargoTableProps> = ({ setPage }) => {
                 </Form.Group>
 
                 <Form.Group controlId="cargoWeight" className="mt-3">
-                  <Form.Label className="font-weight-bold text-left">Вес груза:</Form.Label>
+                  <Form.Label className="font-weight-bold text-left" style={{ color: 'white' }}>Вес груза:</Form.Label>
                   <Form.Control
                     type="number"
                     placeholder="Введите вес груза"
@@ -90,7 +105,7 @@ const CargoNew: React.FC<CargoTableProps> = ({ setPage }) => {
                 </Form.Group>
 
                 <Form.Group controlId="cargoDescription" className="mt-3">
-                  <Form.Label className="font-weight-bold text-left">Описание груза:</Form.Label>
+                  <Form.Label className="font-weight-bold text-left" style={{ color: 'white' }}>Описание груза:</Form.Label>
                   <Form.Control
                     as="textarea"
                     rows={4}
@@ -102,18 +117,23 @@ const CargoNew: React.FC<CargoTableProps> = ({ setPage }) => {
                 </Form.Group>
 
                 <Form.Group controlId="cargoImage" className="mt-3">
-                  <Form.Label className="font-weight-bold text-left">Изображение груза:</Form.Label>
+                  <Form.Label className="font-weight-bold text-left " style={{ color: 'white' }}>Старое изображение :</Form.Label>
+                  <div className="img">
+              <img src={`data:image/jpeg;base64,${CargoToChange.image_binary.toString()}`} 
+              style={{ height: '70px', width: '70px', objectFit: 'cover' }}/>
+              </div>
                   <Form.Control type="file" accept="image/*" onChange={(e) => setCargoImage(e.target.files?.[0] || null)} />
                 </Form.Group>
-
+                
+                
                 <Button
                   variant="primary"
                   type="button"
                   className="w-100 mt-4"
-                  onClick={handleCreateCargo}
+                  onClick={handleChangeCargo}
                   style={{ borderRadius: '10px' }}
                 >
-                  Создать груз
+                  Сохранить изменения
                 </Button>
               </div>
             </Col>
@@ -126,4 +146,4 @@ const CargoNew: React.FC<CargoTableProps> = ({ setPage }) => {
   );
 };
 
-export default CargoNew;
+export default CargoChange;

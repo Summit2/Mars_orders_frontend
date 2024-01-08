@@ -4,6 +4,7 @@ import { CargoItem, mock_data } from '../../models/data.js';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.ts';
 import { ApproveOrder, CancelOrder, DeleteCargo, fetchCargo, UpdateCargo } from '../../store/reducers/Actions.tsx';
 import './buttons.css'
+import { cargoSlice } from '../../store/reducers/CargoSlice.tsx';
 
 
 interface CargoTableProps {
@@ -13,7 +14,7 @@ interface CargoTableProps {
 const CargoTable: FC<CargoTableProps> = ({ setPage }) => {
   const dispatch = useAppDispatch();
   const { all_cargo } = useAppSelector((state) => state.cargoReducer);
-
+  
   const { isAuth , is_moderator} = useAppSelector((state) => state.userReducer);
   const navigate = useNavigate();
 
@@ -23,15 +24,16 @@ const CargoTable: FC<CargoTableProps> = ({ setPage }) => {
       <div>Error</div>
     );
   }
-  console.log(all_cargo)
+  // console.log(all_cargo)
 
   useEffect(() => {
     setPage();
     dispatch(fetchCargo());
   }, []);
  
-  const handleChangeCargo= (id_cargo :number) => {
-    dispatch(UpdateCargo(id_cargo))
+  const handleChangeCargo= (Cargo :CargoItem) => {
+    dispatch(cargoSlice.actions.fetchCargoToChange(Cargo))
+    navigate(`/cargoChange`)
   }
   const handleDeleteCargo = (id_cargo :number) => {
     dispatch(DeleteCargo(id_cargo))
@@ -79,7 +81,7 @@ const CargoTable: FC<CargoTableProps> = ({ setPage }) => {
                     <td>
                       <div className='del-from-order-button'><button
                            className="change_cargo_btn"
-                           onClick={() => handleChangeCargo(cargo.pk)}>
+                           onClick={() => handleChangeCargo(cargo)}>
                            Изменить
                          </button>
                          </div>

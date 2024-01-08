@@ -8,6 +8,7 @@ interface CargoState {
     error: string;
     success: string;
     serialNumber: number;
+    CargoToChange : CargoItem | null;
 }
 
 const initialState: CargoState = {
@@ -16,7 +17,8 @@ const initialState: CargoState = {
     isLoading: false,
     error: '',
     success: '',
-    serialNumber: 0
+    serialNumber: 0,
+    CargoToChange: null,
 }
 
 export const cargoSlice = createSlice({
@@ -76,6 +78,9 @@ export const cargoSlice = createSlice({
             state.error = action.payload
             state.all_cargo = []
             state.cargo = null
+        },
+        fetchCargoToChange(state, action: PayloadAction<CargoItem>) {
+            state.CargoToChange =action.payload
         },
     },
 })

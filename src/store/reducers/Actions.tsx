@@ -29,7 +29,7 @@ export const fetchCargo = (searchValue?: string) => async (dispatch: AppDispatch
 
     try {
         dispatch(cargoSlice.actions.all_cargoFetching())
-        const response = await axios.get<ICargoWithDraft>( '/api/cargo', {
+        const response = await axios.get<ICargoWithDraft>( '/api/cargo/', {
             
             params: {
                 search: searchValue || '',
@@ -84,7 +84,7 @@ export const CreateCargo = (
     cargoTitle: string,
     cargoWeight: number,
     cargoDescription: string | null,
-    cargoImage: string | null,) => async (dispatch: AppDispatch) => {
+    cargoImage: File | null,) => async (dispatch: AppDispatch) => {
 
     const accessToken = Cookies.get('session_key')
     const isModer = Cookies.get('is_moderator')
@@ -93,19 +93,26 @@ export const CreateCargo = (
     }
     dispatch(userSlice.actions.setAuthStatus(accessToken != null && accessToken != ""));
 
+
+
+    const formData = new FormData();
+    formData.append('title', cargoTitle);
+    formData.append('weight', cargoWeight.toString());
+    if (cargoDescription) formData.append('description', cargoDescription);
+    if (cargoImage) formData.append('image_binary', cargoImage);
+
     const config = {
         method: "post",
         url: `/api/cargo/new/`,
         headers: {
+            'Content-Type': 'multipart/form-data', 
             Cookies: `session_key=${accessToken}`,
         },
-        data: {
-            'title' : cargoTitle,
-            'weight' : cargoWeight,
-            'description' : cargoDescription,
-            "image_binary" : cargoImage
-        }
+        data: formData
+
+    
     }
+
     try {
         dispatch(cargoSlice.actions.all_cargoFetching())
         const response = await axios(config);
@@ -121,7 +128,56 @@ export const CreateCargo = (
     //    alert("Груз с таким названием уже существует!")
     }
 }
+export const UpdateCargo = (
+    idCargo: number,
+    cargoTitle: string,
+    cargoWeight: number,
+    cargoDescription: string | null,
+    cargoImage: File | null,) => async (dispatch: AppDispatch) => {
 
+    const accessToken = Cookies.get('session_key')
+    const isModer = Cookies.get('is_moderator')
+    if (isModer=='true') {
+        dispatch(userSlice.actions.setIsModer(true))
+    }
+    dispatch(userSlice.actions.setAuthStatus(accessToken != null && accessToken != ""));
+
+
+
+    const formData = new FormData();
+    formData.append('title', cargoTitle);
+    formData.append('weight', cargoWeight.toString());
+    if (cargoDescription) formData.append('description', cargoDescription);
+    if (cargoImage) formData.append('image_binary', cargoImage);
+
+    const config = {
+        method: "put",
+        url: `/api/cargo/${idCargo}/edit/`,
+        headers: {
+            'Content-Type': 'multipart/form-data', 
+            Cookies: `session_key=${accessToken}`,
+        },
+        data: formData
+
+    
+    }
+
+
+    try {
+        dispatch(cargoSlice.actions.all_cargoFetching())
+        const response = await axios(config);
+        const errorText = response.data.description ?? ""
+        const successText = errorText || `Заявка создана`
+        dispatch(cargoSlice.actions.all_cargoFetched())
+        if (successText != "") {
+            dispatch(fetchCargo())
+            
+        }
+    } catch (e) {
+        // dispatch(cargoSlice.actions.all_cargoFetchedError(`Ошибка: ${e}`))
+    //    alert("Груз с таким названием уже существует!")
+    }
+}
 export const DeleteCargo = (idCargo :number)=> async (dispatch: AppDispatch) => {
     const accessToken = Cookies.get('session_key')
     const isModer = Cookies.get('is_moderator')
@@ -153,36 +209,6 @@ export const DeleteCargo = (idCargo :number)=> async (dispatch: AppDispatch) => 
     }
 }
 
-export const UpdateCargo = (idCargo :number)=> async (dispatch: AppDispatch) => {
-    const accessToken = Cookies.get('session_key')
-    const isModer = Cookies.get('is_moderator')
-    if (isModer=='true') {
-        dispatch(userSlice.actions.setIsModer(true))
-    }
-    dispatch(userSlice.actions.setAuthStatus(accessToken != null && accessToken != ""));
-
-    const config = {
-        method: "put",
-        url: `/api/cargo/${idCargo}/edit/`,
-        headers: {
-            Cookies: `session_key=${accessToken}`,
-        },
-        
-    }
-    try {
-        dispatch(cargoSlice.actions.all_cargoFetching())
-        const response = await axios(config);
-        const errorText = response.data.description ?? ""
-        const successText = errorText || `Заявка создана`
-        dispatch(cargoSlice.actions.all_cargoFetched())
-        if (successText != "") {
-            dispatch(fetchCargo())
-        }
-    } catch (e) {
-        dispatch(cargoSlice.actions.all_cargoFetchedError(`Ошибка: ${e}`))
-        dispatch(cargoSlice.actions.all_cargoFetched(filterMockData()))
-    }
-}
 export const addCargoIntoOrder = (cargoId: number) => async (dispatch: AppDispatch) => {
     const accessToken = Cookies.get('session_key');
     const config = {
@@ -377,7 +403,7 @@ export const fetchOrders = (new_status:string | null, date_start: string | null,
     dispatch(userSlice.actions.setAuthStatus(accessToken != null && accessToken !== ""));
     const date_filter = `date_create=${date_start}&date_finished=${date_finish}`;
 
-    let url = base_url+"/orders?" ;
+    let url = base_url+"/orders/?" ;
     if ((date_start !== null && date_start !== undefined && date_start!=='') || (date_finish !== null && date_finish !== undefined && date_finish!=='')) {
         url += date_filter;
     } 
@@ -385,7 +411,7 @@ export const fetchOrders = (new_status:string | null, date_start: string | null,
         url +=`order_status=${new_status}`;
     }
     else{
-        url = base_url + "/orders";
+        url = base_url + "/orders/";
     }
 
     try {
@@ -415,7 +441,7 @@ export const fetchDraftOrder = (id_order_draft: number ) => async (dispatch: App
     try {
         
 
-        const response = await axios.get<IOrder>(base_url + `/order/${id_order_draft}`, {
+        const response = await axios.get<IOrder>(base_url + `/order/${id_order_draft}/`, {
             headers: {
                 Cookies: `session_key=${accessToken}`,
             }
