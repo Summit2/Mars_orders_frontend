@@ -32,14 +32,15 @@ const OrdersList: FC<OrdersListProps> = ({ setPage }) => {
 
   useEffect(() => {
     setPage();
-    dispatch(fetchOrders(filterStatus));
+    dispatch(fetchOrders(filterStatus,formatDateToDDMMYYYY(startDate),formatDateToDDMMYYYY(endDate)));
 
-    // Set up polling every 2 seconds
+
     pollingInterval.current = setInterval(() => {
-      dispatch(fetchOrders(filterStatus));
-    }, 2000);
+      dispatch(fetchOrders(filterStatus,formatDateToDDMMYYYY(startDate),formatDateToDDMMYYYY(endDate)));
 
-    // Clear polling interval when component unmounts
+    }, 3000);
+
+    
     return () => {
       if (pollingInterval.current) {
         clearInterval(pollingInterval.current);
@@ -94,7 +95,7 @@ const OrdersList: FC<OrdersListProps> = ({ setPage }) => {
   }
   const handleClearFilterLogin= () => {
     setFilterLogin('')
-    dispatch(fetchOrders(''))
+    // dispatch(fetchOrders(''))
   }
   return (
     <div>

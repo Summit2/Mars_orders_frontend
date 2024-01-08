@@ -337,12 +337,12 @@ export const ApproveOrder = (IdOrder : number) => async (dispatch: AppDispatch) 
         }
     const config = {
         method: "put",
-        url: `/api/update_status/${IdOrder}/set_moderator_status/`,
+        url: `/api/async_task/`,
         headers: {
             Cookies: `session_key=${accessToken}`,
         },
         data : {
-            "status" : 'завершён'
+            'id_order' :IdOrder
         }
         
     }
