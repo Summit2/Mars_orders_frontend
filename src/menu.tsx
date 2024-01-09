@@ -1,5 +1,5 @@
 // menu.tsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FC } from 'react';
 import { useAppSelector } from './hooks/redux.ts';
@@ -8,9 +8,12 @@ interface OrdersListProps {
   setPage: () => void;
 }
 
-const Menu: FC<OrdersListProps> = () => {
+const Menu: FC<OrdersListProps> = ({setPage}) => {
   const { isAuth, is_moderator } = useAppSelector((state) => state.userReducer);
+  useEffect(()=>{
 
+    setPage()
+  },[])
   return (
     <div className="container mt-3">
       {isAuth ? (

@@ -8,7 +8,8 @@
   flex-grow: 1;
   flex-shrink: 1;
   min-width: 150; /* Allow buttons to shrink beyond their initial width */
-  max-width: 200px;
+  max-width: 200;
+  
 }
 .send-button,
 .del-button {
@@ -20,6 +21,7 @@
   display: inline-block;
   font-size: 16px;
   cursor: pointer;
+  
 }
 
 .del-button {
@@ -28,7 +30,7 @@
 .del-from-order-button {
   background-color: #a5bdec; 
   width: 65px; 
-  height: 30px;
+  height: 29x;
   
 }
 .quantity-buttons-wrapper {

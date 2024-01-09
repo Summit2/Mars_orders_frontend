@@ -22,6 +22,8 @@ function App() {
   const cargoTablePage = { name: 'Таблица', to: 'cargoTable' };
   const cargoNewPage = { name: 'Новый груз', to: 'cargoNew' };
   const cargoChangePage = { name: 'Редактирование груза', to: 'cargoChange' };
+  const Login = { name: 'Аутентификация', to: 'login' };
+  const Regitster = { name: 'Регистрация', to: 'register' };
   const [searchValue, setSearchValue] = useState('');
   const [pages, setPage] = useState<IBreadCrumb[]>([homePage]);
   const addPage = (newPage: IBreadCrumb[]) => {
@@ -72,13 +74,13 @@ function App() {
           <Route
             path="/login"
             element={
-              <LoginPage />
+              <LoginPage setPage={() => addPage([homePage, Login])} />
             }
           />
           <Route
             path="/register"
             element={
-              <RegisterPage />
+              <RegisterPage setPage={() => addPage([homePage, Regitster])} />
             }
           />
           <Route

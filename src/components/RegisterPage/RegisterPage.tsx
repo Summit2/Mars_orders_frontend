@@ -1,13 +1,15 @@
-import {FC, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import {Container, Row, Col, Form, Button} from 'react-bootstrap';
 import {registerSession} from '../../store/reducers/Actions.tsx';
 import {useAppDispatch, useAppSelector} from "../../hooks/redux.ts";
 import {Link} from "react-router-dom";
 
 interface RegisterPageProps {
+    setPage: () => void;
+        
 }
 
-const RegisterPage: FC<RegisterPageProps> = () => {
+const RegisterPage: FC<RegisterPageProps> = ({setPage}) => {
     const dispatch = useAppDispatch();
     const [first_name, setUserFirstname] = useState('',);
     const [last_name, setUserLastname] = useState('');
@@ -15,6 +17,12 @@ const RegisterPage: FC<RegisterPageProps> = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const {success, isAuth} = useAppSelector(state => state.userReducer)
+
+
+    useEffect(() => {
+        setPage();
+        
+    }, []);
 
     const handleRegister = () => {
         if (!first_name || !last_name || !login || !password || !confirmPassword) {

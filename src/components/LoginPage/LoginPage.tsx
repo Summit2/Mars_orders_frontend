@@ -1,14 +1,17 @@
-import {FC, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import {Container, Row, Col, Form, Button} from 'react-bootstrap';
 import {useAppDispatch, useAppSelector} from "../../hooks/redux.ts";
 import {loginSession} from "../../store/reducers/Actions.tsx";
 import {Link} from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 interface LoginPageProps {
-
+    
+        setPage: () => void;
+        
+    
 }
 
-const LoginPage: FC<LoginPageProps> = () => {
+const LoginPage: FC<LoginPageProps> = ({setPage}) => {
     const dispatch = useAppDispatch()
     const {error, isAuth} = useAppSelector(state => state.userReducer)
     const [login, setLogin] = useState('');
@@ -21,7 +24,10 @@ const LoginPage: FC<LoginPageProps> = () => {
         }
         dispatch(loginSession(login, password))
     };
-
+    useEffect(() => {
+        setPage();
+        
+    }, []);
     const handleLogin = async () => {
         await handleSubmit()
         navigate("/cargo")
@@ -37,7 +43,7 @@ const LoginPage: FC<LoginPageProps> = () => {
                 <Row className="justify-content-center">
                     <Col md={5}>
                         <div className="bg-dark p-4 rounded">
-                            <h2 className="text-center mb-4" style={{ color: 'white' }}>Авторизация</h2>
+                            <h2 className="text-center mb-4" style={{ color: 'white' }}>Вход в систему</h2>
                             <Form.Label className="font-weight-bold text-left"></Form.Label>
                             <Form.Control
                                 onChange={(e) => setLogin(e.target.value)}

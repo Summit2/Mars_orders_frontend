@@ -64,15 +64,10 @@ const handleDeleteOrder =  () => {
  const handleDeleteFromOrder = (id_cargo:number ) => {
     // console.log("handleDeleteFromOrder start")
     dispatch(DeleteCargoFromOrder(id_cargo, id_order_draft));
-    // dispatch(fetchDraftOrder(id_order_draft));
-    // console.log("handleDeleteFromOrder finish")
+
  }
  const handleUpdateQuantity = (cargoId: number, newAmount: number) => {
-  // You need to dispatch an action to update the quantity here
-  // For example, you can create an action like updateCargoQuantity
-  // and dispatch it using dispatch(updateCargoQuantity(cargoId, newQuantity));
 
-  // This is just an example, replace it with your actual action
   dispatch(updateCargoAmount(id_order_draft,cargoId, newAmount));
 };
 

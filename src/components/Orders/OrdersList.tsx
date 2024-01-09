@@ -24,29 +24,32 @@ const OrdersList: FC<OrdersListProps> = ({ setPage }) => {
   const { isAuth, is_moderator } = useAppSelector((state) => state.userReducer);
   const navigate = useNavigate();
 
+
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>('');
   const [filterLogin, setFilterLogin] = useState<string>('');
   const pollingInterval = useRef<NodeJS.Timeout | null>(null);
+  
 
   useEffect(() => {
     setPage();
-    dispatch(fetchOrders(filterStatus,formatDateToDDMMYYYY(startDate),formatDateToDDMMYYYY(endDate)));
-
-
+    dispatch(fetchOrders(filterStatus, formatDateToDDMMYYYY(startDate), formatDateToDDMMYYYY(endDate)));
+  
     pollingInterval.current = setInterval(() => {
-      dispatch(fetchOrders(filterStatus,formatDateToDDMMYYYY(startDate),formatDateToDDMMYYYY(endDate)));
-
+      dispatch(fetchOrders(filterStatus, formatDateToDDMMYYYY(startDate), formatDateToDDMMYYYY(endDate)));
+      // After fetching the orders, apply the login filter
+      if (filterLogin) {
+        handleFilterLogin();
+      }
     }, 3000);
-
-    
+  
     return () => {
       if (pollingInterval.current) {
         clearInterval(pollingInterval.current);
       }
     };
-  }, []);
+  }, [filterStatus, filterLogin, startDate, endDate]);
  
   const handleCancelOrder = (id_order :number) => {
     dispatch(CancelOrder(id_order))
@@ -57,7 +60,7 @@ const OrdersList: FC<OrdersListProps> = ({ setPage }) => {
 
   //date filter
    const handleFilterDates = () => {
-    // console.log(endDate)
+
     dispatch(fetchOrders(filterStatus,formatDateToDDMMYYYY(startDate),formatDateToDDMMYYYY(endDate)));
   }
   const handleClearFilterDate = () => {
@@ -188,7 +191,10 @@ const OrdersList: FC<OrdersListProps> = ({ setPage }) => {
             ):( <th>Статус заказа</th> ) }
             <th>Грузы в заказе</th>
             <th>Менеджер</th>
+            <th>Создано</th>
             <th>Cформировано</th>
+            <th>Завершено</th>
+            <th>Результат доставки</th>
             <th></th>
           </tr>
         </thead>
@@ -208,7 +214,10 @@ const OrdersList: FC<OrdersListProps> = ({ setPage }) => {
                       <Link to={`/order/${order.pk}`}>Подробности</Link>
                     </td>
                     <td>{order.moderator_email ?? "-"}</td>
-                    <td>{formatDate(order.date_create) ?? "-"}</td>
+                    <td>{formatDate(order.date_create)!='01.01.1970' ? formatDate(order.date_create) : "-" }</td>
+                    <td>{formatDate(order.date_accept)!='01.01.1970' ? formatDate(order.date_accept) : "-" }</td>
+                    <td>{formatDate(order.date_finish)!='01.01.1970' ? formatDate(order.date_finish) : "-" }</td>
+                    <td>{order.is_delivered == null ? "-" : (order.is_delivered ? "Успешно" : "Неуспешно")}</td>
                     {(is_moderator && order.order_status === 'в работе') ? (<td className="buttons-wrapper">
                      
                          <button

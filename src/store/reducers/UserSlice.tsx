@@ -1,8 +1,8 @@
-import {IUser} from "../../models/data.ts";
+import {IAuthResponse} from "../../models/data.ts";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 interface UserState {
-    user: IUser | null
+    user: IAuthResponse | null
     isLoading: boolean 
     error: string
     success: string
@@ -27,6 +27,9 @@ export const userSlice = createSlice({
             state.isLoading = true
 
         },
+        setUserInfo(state, action: PayloadAction<IAuthResponse>){
+            state.user = action.payload
+        },
         setAuthStatus(state, action: PayloadAction<boolean>) {
             state.isAuth = action.payload
         },
@@ -40,10 +43,8 @@ export const userSlice = createSlice({
             state.error = action.payload
             state.success = ''
         },
-        setIsModer(state, action: PayloadAction<boolean>){
-            if (action.payload===true) {
-            state.is_moderator = true
-            }
+        setIsModer(state, action: PayloadAction<boolean>) {
+            state.is_moderator = action.payload;
         },
         resetStatuses(state) {
             state.isLoading = false

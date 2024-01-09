@@ -16,6 +16,7 @@ import {cargoSlice} from "./CargoSlice.tsx"
 import {orderSlice} from "./OrderSlice.tsx";
 import {userSlice} from "./UserSlice.tsx";
 import OrderDraft from "../../components/OrderDraft/OrderDraft.tsx";
+import { useAppSelector } from "../../hooks/redux.ts";
 
 
 const base_url = '/api'// 'http://localhost:8000'
@@ -338,12 +339,12 @@ export const ApproveOrder = (IdOrder : number) => async (dispatch: AppDispatch) 
         }
     const config = {
         method: "put",
-        url: `/api/async_task/`,
+        url: `api/update_status/${IdOrder}/set_moderator_status/`,
         headers: {
             Cookies: `session_key=${accessToken}`,
         },
         data : {
-            'id_order' :IdOrder
+            'status' : 'завершён'
         }
         
     }
@@ -476,7 +477,9 @@ export const updateCargoAmount = (id_order_draft:number,cargoId: number , newAmo
             }
             
         }
-
+        if( newAmount==0){
+            dispatch(DeleteCargoFromOrder(cargoId, id_order_draft))
+        }
         const response = await axios(config);
         
         
@@ -557,7 +560,9 @@ export const logoutSession = () => async (dispatch: AppDispatch) => {
         const successText = errorText || "Выход из аккаунта"
         dispatch(userSlice.actions.setStatuses([errorText, successText]))
         Cookies.set('is_moderator', `false`);
+        
         dispatch(userSlice.actions.setIsModer(false));
+    
         if (errorText == '') {
             Cookies.remove('session_key');
             dispatch(userSlice.actions.setAuthStatus(false))
@@ -591,9 +596,9 @@ export const loginSession = (login: string, password: string) => async (dispatch
 
         
 
-        const errorText = response.data.description ?? ""
-        const successText = errorText || "Авторизация прошла успешна"
-        dispatch(userSlice.actions.setStatuses([errorText, successText]));
+        // const errorText = response.data.description ?? ""
+        // const successText = errorText || "Авторизация прошла успешна"
+        // dispatch(userSlice.actions.setStatuses([errorText, successText]));
         const session_key = response.data.access_token
         // console.log('moderator?', response.data.access_token)
         // console.log(session_key)
@@ -604,6 +609,9 @@ export const loginSession = (login: string, password: string) => async (dispatch
             dispatch(userSlice.actions.setAuthStatus(true));
             
         }
+        // console.log(response.data)
+        dispatch(userSlice.actions.setUserInfo(response.data));
+        dispatch(userSlice.actions.setIsModer(false));
         // console.log(response.data.is_moderator)
         Cookies.set('is_moderator', `${response.data.is_moderator}`);
         const isModer = Cookies.get('is_moderator')
