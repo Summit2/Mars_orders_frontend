@@ -15,6 +15,7 @@ import Cookies from 'js-cookie';
 import {cargoSlice} from "./CargoSlice.tsx"
 import {orderSlice} from "./OrderSlice.tsx";
 import {userSlice} from "./UserSlice.tsx";
+import OrderDraft from "../../components/OrderDraft/OrderDraft.tsx";
 
 
 const base_url = '/api'// 'http://localhost:8000'
@@ -448,9 +449,40 @@ export const fetchDraftOrder = (id_order_draft: number ) => async (dispatch: App
         });
         
         
-        // console.log(response.data)
+        console.log(response.data)
         
         dispatch(orderSlice.actions.DataOrderDraftFetched(response.data))
+        
+    } catch (e) {
+        console.log(e)
+    }
+    
+}
+export const updateCargoAmount = (id_order_draft:number,cargoId: number , newAmount: number
+    ) => async (dispatch: AppDispatch) => {
+
+    const accessToken = Cookies.get('session_key');
+    dispatch(userSlice.actions.setAuthStatus(accessToken != null && accessToken != ""));
+    try {
+        
+        const config = {
+            method: "put",
+            url: `/api/update_order/${cargoId}/put/`,
+            headers: {
+                Cookies: `session_key=${accessToken}`,
+            },
+            data : {
+                "amount" : newAmount
+            }
+            
+        }
+
+        const response = await axios(config);
+        
+        
+        console.log(response.data)
+        
+        dispatch(fetchDraftOrder(id_order_draft))
         
     } catch (e) {
         console.log(e)
@@ -475,45 +507,6 @@ export const deleteOrderById = (id_order: number) => async (dispatch: AppDispatc
         dispatch(orderSlice.actions.ordersFetchedError(`${e}`))
     }
 }
-
-// export const updateOrder = (
-//     id: number,
-//     description: string,
-//     hikeName: string,
-//     startDate: string,
-//     endDate: string,
-//     leader: string
-// ) => async (dispatch: AppDispatch) => {
-//     const accessToken = Cookies.get('session_key');
-//     const config = {
-//         method: "put",
-//         url: "/api/v3/hikes",
-//         headers: {
-//             Cookies: `session_key=${accessToken}`,
-//             ContentType: "application/json"
-//         },
-//         data: {
-//             description: description,
-//             hike_name: hikeName,
-//             date_start_hike: convertInputFormatToServerDate(startDate),
-//             date_end: convertInputFormatToServerDate(endDate),
-//             leader: leader,
-//             id: id,
-//         }
-//     };
-
-//     try {
-//         const response = await axios(config);
-//         const errorText = response.data.description ?? ""
-//         const successText = errorText || "Успешно обновленно"
-//         dispatch(orderSlice.actions.ordersUpdated([errorText, successText]));
-//         setTimeout(() => {
-//             dispatch(orderSlice.actions.ordersUpdated(['', '']));
-//         }, 5000);
-//     } catch (e) {
-//         dispatch(orderSlice.actions.ordersFetchedError(`${e}`));
-//     }
-// }
 
 
 export const registerSession = (f_name : string,l_name :string,login: string, password: string) => async (dispatch: AppDispatch) => {

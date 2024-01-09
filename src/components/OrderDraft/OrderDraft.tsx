@@ -9,7 +9,7 @@ import { FC, useEffect } from 'react';
 import CItem from "../CargoItem/CargoItem.tsx";
 //redux imports
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.ts';
-import { DeleteCargoFromOrder, deleteOrderById, fetchDraftOrder, makeOrder} from '../../store/reducers/Actions.tsx';
+import { DeleteCargoFromOrder, deleteOrderById, fetchDraftOrder, makeOrder, updateCargoAmount} from '../../store/reducers/Actions.tsx';
 import './buttonStyles.css';
 
 interface OrderProps {
@@ -67,6 +67,15 @@ const handleDeleteOrder =  () => {
     // dispatch(fetchDraftOrder(id_order_draft));
     // console.log("handleDeleteFromOrder finish")
  }
+ const handleUpdateQuantity = (cargoId: number, newAmount: number) => {
+  // You need to dispatch an action to update the quantity here
+  // For example, you can create an action like updateCargoQuantity
+  // and dispatch it using dispatch(updateCargoQuantity(cargoId, newQuantity));
+
+  // This is just an example, replace it with your actual action
+  dispatch(updateCargoAmount(id_order_draft,cargoId, newAmount));
+};
+
  return (
   <div>
     <div>
@@ -79,7 +88,8 @@ const handleDeleteOrder =  () => {
           <tr>
             <th></th>
             <th>Название</th>
-            {id_order==id_order_draft && ( <th></th> )}
+             <th>Количество</th> 
+              {id_order==id_order_draft && ( <th></th> )}
             {/* Add more columns as needed */}
           </tr>
         </thead>
@@ -98,6 +108,22 @@ const handleDeleteOrder =  () => {
                   <tr key={cargo.pk}>
                     <td>{i+1}</td>
                     <td><Link to={`/cargo/${cargo.pk}`}>{cargo.title}</Link></td>
+                    <td>
+            <div className="quantity-buttons-wrapper">
+            {id_order==id_order_draft && (
+              <button
+                className="quantity-button"
+                onClick={() => handleUpdateQuantity(cargo.pk, cargo.amount - 1)}>
+                -
+              </button> )}
+              <span>{cargo.amount}</span>
+              {id_order==id_order_draft && (<button
+                className="quantity-button"
+                onClick={() => handleUpdateQuantity(cargo.pk, cargo.amount + 1)}>
+                +
+              </button>)}
+            </div>
+          </td>
                     {id_order==id_order_draft && (
                        <td>
                        <div className="buttons-wrapper">
