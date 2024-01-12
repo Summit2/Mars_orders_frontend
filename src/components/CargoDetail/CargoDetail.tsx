@@ -37,8 +37,8 @@ const CargoDetail: FC<CargoDetailProps> = ({setPage}) => {
         <div className='font'>
          <b> {cargo.title}</b>
           <div className="img">
-          <img src={`data:image/jpeg;base64,${cargo.image_binary.toString()}`} 
-          style={{ height: '260px', width: '350px', objectFit: 'cover' }}/>
+          <img className = "img-detail" src={`data:image/jpeg;base64,${cargo.image_binary.toString()}`} 
+          />
           </div>
           
           <div>

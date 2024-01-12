@@ -78,14 +78,14 @@ const handleDeleteOrder =  () => {
     </div>
 
     <div className="bottom">
-      <table className="table table-bordered table-striped">
+      <table className="table table-bordered table-striped table-hover">
         <thead>
           <tr>
             <th></th>
             <th>Название</th>
              <th>Количество</th> 
               {id_order==id_order_draft && ( <th></th> )}
-            {/* Add more columns as needed */}
+            
           </tr>
         </thead>
         <tbody>

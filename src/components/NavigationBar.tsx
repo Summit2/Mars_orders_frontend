@@ -37,13 +37,16 @@ const NavigationBar: FC<NavigationBarProps> = ({handleSearchValue}) => {
     };
     useEffect(() => {
         // dispatch()
+        //@ts-ignore
    setUserState(user?.first_name)
     },[user])
 
     return (
         <Navbar expand="sm" className='bg-black' data-bs-theme="dark">
             <div className='container-xl px-2 px-sm-3'>
-                <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+                {/* creates a bg icon */}
+                <Navbar.Toggle aria-controls="basic-navbar-nav"/> 
+                {/* activates this icon */}
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Item>

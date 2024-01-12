@@ -42,12 +42,12 @@ const CargoTable: FC<CargoTableProps> = ({ setPage }) => {
 
 
   return (
-    <div>
+    <div className="table-responsive">
       <h2>Список грузов</h2>
       {/* {isLoading && <p>Loading...</p>} */}
 
       
-      <table className="table table-bordered table-striped">
+      <table className="table table-bordered table-striped  table-hover">
         <thead>
           <tr>
             <th>ID груза</th>

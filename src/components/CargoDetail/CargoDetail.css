@@ -1,7 +1,7 @@
 .font {
     font-size: 20px;
   
-    @media (max-width: 600px) {
+    @media (max-width: 480px) {
       font-size: 14px;
     }
   }
@@ -9,8 +9,19 @@
   .font b {
     font-size: 30px;
   
-    @media (max-width: 600px) {
-      font-size: 20px;
+    @media (max-width: 480px) {
+      font-size: 18px;
     }
   }
   
+
+  .img-detail{
+    height: 450px;
+     width: 400px;
+     object-fit: cover;
+
+     @media (max-width: 480px) {
+      height: 300px;
+     width: 350px;
+    }
+  }

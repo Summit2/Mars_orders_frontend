@@ -93,7 +93,7 @@ const OrdersList: FC<OrdersListProps> = ({ setPage }) => {
       filteredOrders.push(orders.orders[i]);
     }
   }
-
+ 
   dispatch(orderSlice.actions.ordersFetched({"orders" : filteredOrders}))
   }
   const handleClearFilterLogin= () => {
@@ -165,8 +165,8 @@ const OrdersList: FC<OrdersListProps> = ({ setPage }) => {
         Сбросить фильтр
       </Button>
     </div>
-}
-      <table className="table table-bordered table-striped">
+}<div className="table-responsive">
+      <table className="table table-bordered table-striped   table-hover">
         <thead>
           <tr>
             <th>ID заказа</th>
@@ -239,6 +239,7 @@ const OrdersList: FC<OrdersListProps> = ({ setPage }) => {
             })()}
         </tbody>
       </table>
+      </div>
     </div>
   );
 };
